@@ -1,24 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
+	public float cameraMovementSpeed;
+	public float cameraRotaionLimit;
+	public float horizontalSmoothTime;
+	public float levelWidth;
+	private float horizontalMovement;
+	private float previousHorizontalMovement;
+	private float currentHorizontalMovementVelocity;
 
-	public GameObject player;
-	public float cameraRotaionTime;
-	private Vector3 offset;
-	private float currentVelocity;
-
-	// Use this for initialization
-	void Start () {
-		// get the current camera position
-		offset = transform.position;
+	void Start ()
+	{
+		previousHorizontalMovement = 0.0f;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		// match the cammera positon position with the player ship
-		transform.position = player.rigidbody.position + offset;
-		transform.rotation = Quaternion.Euler (player.rigidbody.rotation.eulerAngles.x, player.rigidbody.rotation.eulerAngles.y,
-		                                                   Mathf.SmoothDampAngle(transform.rotation.eulerAngles.z, player.rigidbody.rotation.eulerAngles.z, ref currentVelocity, cameraRotaionTime));
+
+	void FixedUpdate ()
+	{
+		// get device rotaion value
+		horizontalMovement = Mathf.Round (Input.acceleration.x * 100.0f) / 100.0f;
+
+		// smooth the rotaion
+		float actualHorizontalMovement = Mathf.SmoothDamp (previousHorizontalMovement, horizontalMovement, ref currentHorizontalMovementVelocity, horizontalSmoothTime);
+
+		// match camera rotaion with device rotation
+		rigidbody.rotation = Quaternion.Euler (new Vector3 (0.0f, 0.0f, actualHorizontalMovement) * -cameraRotaionLimit);
+
+		// move camera with speed adjust by the rotation angle
+		rigidbody.velocity = new Vector3 (actualHorizontalMovement, rigidbody.position.y, rigidbody.position.z) * cameraMovementSpeed;
+
+		// make sure the camera does not go to far to the left or right
+		rigidbody.position = new Vector3 (
+			Mathf.Clamp (rigidbody.position.x, -levelWidth, levelWidth),
+			rigidbody.position.y,
+			rigidbody.position.z
+		);
+
+		previousHorizontalMovement = horizontalMovement;
 	}
 }
