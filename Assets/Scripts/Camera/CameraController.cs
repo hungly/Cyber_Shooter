@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
 	void FixedUpdate ()
 	{
 		// get device rotaion value
-		horizontalMovement = Mathf.Round (Input.acceleration.x * 1000.0f) / 1000.0f;
+		horizontalMovement = Mathf.Round (Input.acceleration.x * 100.0f) / 100.0f;
 
 		// smooth the rotaion
 		float actualHorizontalMovement = Mathf.SmoothDamp (previousHorizontalMovement, horizontalMovement, ref currentHorizontalMovementVelocity, horizontalSmoothTime);
