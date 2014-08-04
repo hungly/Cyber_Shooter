@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
 	public float maxPitch;
 	public float maxYaw;
 	public float pitchCorrection;
+	public float stability;
+	public float speed;
 	private Vector2 screenCorrection;
 	private float yPositionCurrentVelocity;
 	private float zPositionCurrentVelocity;
@@ -53,15 +55,23 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate ()
 	{
 		StablizePosition ();
-		StablizeRotation ();
-	}
+		//StablizeRotation ();
 
+		Vector3 predictedUp = Quaternion.AngleAxis(
+			rigidbody.angularVelocity.magnitude * Mathf.Rad2Deg * stability / speed,
+			rigidbody.angularVelocity
+			) * transform.up;
+		
+		Vector3 torqueVector = Vector3.Cross(predictedUp, cameraRigibody.rotation * Vector3.up);
+		rigidbody.AddTorque(torqueVector * speed * speed);
+	}
+	
 	void StablizePosition ()
 	{
-		rigidbody.position = new Vector3 (
+		transform.position = new Vector3 (
 			cameraRigibody.position.x,
-			Mathf.SmoothDamp (rigidbody.position.y, 0.0f, ref yPositionCurrentVelocity, smoothTime),
-			Mathf.SmoothDamp (rigidbody.position.z, 0.0f, ref zPositionCurrentVelocity, smoothTime)
+			Mathf.SmoothDamp (transform.position.y, 0.0f, ref yPositionCurrentVelocity, smoothTime),
+			Mathf.SmoothDamp (transform.position.z, 0.0f, ref zPositionCurrentVelocity, smoothTime)
 		);
 	}
 
