@@ -57,13 +57,21 @@ public class PlayerController : MonoBehaviour
 		StablizePosition ();
 		//StablizeRotation ();
 
-		Vector3 predictedUp = Quaternion.AngleAxis(
+		Vector3 predictedUp = Quaternion.AngleAxis (
 			rigidbody.angularVelocity.magnitude * Mathf.Rad2Deg * stability / speed,
 			rigidbody.angularVelocity
-			) * transform.up;
+		) * transform.up;
+				
+		Vector3 torqueVectorUp = Vector3.Cross (predictedUp, cameraRigibody.rotation * Vector3.up);
+
+		Vector3 predictedForward = Quaternion.AngleAxis (
+			rigidbody.angularVelocity.magnitude * Mathf.Rad2Deg * stability / speed,
+			rigidbody.angularVelocity
+		) * transform.forward;
 		
-		Vector3 torqueVector = Vector3.Cross(predictedUp, cameraRigibody.rotation * Vector3.up);
-		rigidbody.AddTorque(torqueVector * speed * speed);
+		Vector3 torqueVectorForward = Vector3.Cross (predictedForward, cameraRigibody.rotation * Vector3.forward);
+
+		rigidbody.AddTorque ((torqueVectorUp + torqueVectorForward) * speed * speed);
 	}
 	
 	void StablizePosition ()
