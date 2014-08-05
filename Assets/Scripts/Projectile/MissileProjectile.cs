@@ -3,13 +3,15 @@ using System.Collections;
 
 public class MissileProjectile : MonoBehaviour
 {
-	public float projectileSpeed;
+	public float enginePower;
 	public float explosionForce;
 	public float explosionRadius;
 	
 	void Start ()
 	{
-		rigidbody.velocity = transform.forward * projectileSpeed;
+		rigidbody.useGravity = true;
+		rigidbody.AddForce ((transform.forward) * 10, ForceMode.Impulse);
+		StartCoroutine (turnOneEngine ());
 	}
 
 	void OnCollisionEnter (Collision collision)
@@ -24,5 +26,14 @@ public class MissileProjectile : MonoBehaviour
 				c.rigidbody.AddExplosionForce (explosionForce, collision.contacts [0].point, 3, 0, ForceMode.Impulse);
 			}
 		}
+	}
+
+	IEnumerator turnOneEngine ()
+	{
+		yield return new WaitForSeconds (0.5f);
+		rigidbody.useGravity = false;
+		rigidbody.velocity = Vector3.zero;
+		// add engine animation here and enjoy result
+		rigidbody.AddForce(transform.forward * enginePower, ForceMode.Acceleration);
 	}
 }

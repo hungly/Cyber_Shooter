@@ -3,10 +3,10 @@ using System.Collections;
 
 public class BirdshotProjectile : MonoBehaviour
 {
-	public float projectileSpeed;
+	public float shotForce;
 	
 	void Start ()
 	{
-		rigidbody.velocity = transform.forward * projectileSpeed;
+		rigidbody.AddForce(transform.forward * shotForce, ForceMode.Impulse);
 	}
 }
