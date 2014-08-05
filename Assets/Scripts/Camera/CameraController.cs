@@ -3,12 +3,19 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
+	// camera maximum movement speed
 	public float cameraMovementSpeed;
+	// camera maximum rotaion angle
 	public float cameraRotaionLimit;
+	// time factor for smooth camera movement
 	public float horizontalSmoothTime;
+	// level size, determined how much the camera will move to sides
 	public float levelWidth;
+	// horizontal movement for the camera
 	private float horizontalMovement;
+	// the previous value of horizontal movement
 	private float previousHorizontalMovement;
+	// current velocity correction
 	private float currentHorizontalMovementVelocity;
 
 	void Start ()
@@ -18,7 +25,7 @@ public class CameraController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		// get device rotaion value
+		// get device rotaion value remove some minor number in attemp to remove screen vibration
 		horizontalMovement = Mathf.Round (Input.acceleration.x * 100.0f) / 100.0f;
 
 		// smooth the rotaion
@@ -37,6 +44,7 @@ public class CameraController : MonoBehaviour
 			rigidbody.position.z
 		);
 
+		// store new value
 		previousHorizontalMovement = horizontalMovement;
 	}
 }
