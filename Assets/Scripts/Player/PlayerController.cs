@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
 					Vector2 touchPosition = Input.GetTouch (i).position - screenCorrection;
 
 					Vector3 bulletPosition = Vector3.zero;
+					Vector3 weaponMuzzleCorrection = new Vector3(0.0f,-0.25f, 1.5f);
+
+					Quaternion angle = Quaternion.identity;
 
 					if (bullet.tag == "BirdshotProjectile") {
 						for (int j = 0; j < 5; j++) {
@@ -83,28 +86,30 @@ public class PlayerController : MonoBehaviour
 							// calculate the shot angle with a little correction
 							// x from -maxPitch to maxPitch, positive is pitch down, negative is pitch up
 							// y from -maxYaw to maxYaw, positive is yaw right, negative is yaw left
-							Quaternion angle = Quaternion.Euler (new Vector3 (
+							angle = Quaternion.Euler (new Vector3 (
 								-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection + angleVary.x * birdshotSpreadFactor,
 								Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw + angleVary.y * birdshotSpreadFactor,
 								0.0f
 							));
 							
 							// spawn the bullet with prepared information
-							Instantiate (bullet, weaponPoint.transform.position + bulletPosition, angle);
+							Instantiate (bullet, weaponPoint.transform.position + bulletPosition + weaponMuzzleCorrection, angle);
 						}
 					} else {
 						// calculate the shot angle with a little correction
 						// x from -maxPitch to maxPitch, positive is pitch down, negative is pitch up
 						// y from -maxYaw to maxYaw, positive is yaw right, negative is yaw left
-						Quaternion angle = Quaternion.Euler (new Vector3 (
+						angle = Quaternion.Euler (new Vector3 (
 						-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection,
 						Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw,
 						0.0f
 						));
 
 						// spawn the bullet with prepared information
-						Instantiate (bullet, weaponPoint.transform.position, angle);
+						Instantiate (bullet, weaponPoint.transform.position + weaponMuzzleCorrection, angle);
 					}
+
+					weaponPoint.transform.rotation = angle;
 				}
 			}
 		}

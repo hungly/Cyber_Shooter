@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MissileProjectile : MonoBehaviour
 {
+	public float shotForce;
 	public float enginePower;
 	public float explosionForce;
 	public float explosionRadius;
@@ -10,7 +11,7 @@ public class MissileProjectile : MonoBehaviour
 	void Start ()
 	{
 		rigidbody.useGravity = true;
-		rigidbody.AddForce ((transform.forward) * 10, ForceMode.Impulse);
+		rigidbody.AddForce ((transform.forward) * shotForce, ForceMode.Impulse);
 		StartCoroutine (turnOneEngine ());
 	}
 
