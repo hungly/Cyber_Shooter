@@ -7,17 +7,14 @@ public class PlayerController : MonoBehaviour
 	public GameObject weaponPoint;
 	public GameObject bullet;
 	public GUIText test;
-	public float smoothTime;
 	public float maxPitch;
 	public float maxYaw;
 	public float pitchCorrection;
 	public float stability;
 	public float speed;
+	public float positionSmoothTime;
 	private Vector2 screenCorrection;
-	private float yPositionCurrentVelocity;
-	private float zPositionCurrentVelocity;
-	private float xRotationCurrentVelocity;
-	private float yRotationCurrentVelocity;
+	private Vector3 currentPositionVelocity = Vector3.zero;
 
 	void Start ()
 	{
@@ -54,41 +51,45 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		StablizePosition ();
-		//StablizeRotation ();
+		StabilizePosition ();
 
+		StabilizeRotation ();
+	}
+	
+	void StabilizePosition ()
+	{
+		//transform.position = new Vector3 (cameraRigibody.position.x, 0.0f, 0.0f);
+
+		rigidbody.position = new Vector3 (
+			cameraRigibody.position.x,
+			rigidbody.position.y,
+			rigidbody.position.z
+			);
+
+		rigidbody.velocity = Vector3.SmoothDamp(
+			new Vector3(rigidbody.position.x, rigidbody.position.y, rigidbody.position.z),
+			new Vector3(rigidbody.position.x, 0.0f,0.0f),
+			ref currentPositionVelocity,
+			positionSmoothTime
+			) * -1;
+	}
+
+	void StabilizeRotation ()
+	{
 		Vector3 predictedUp = Quaternion.AngleAxis (
 			rigidbody.angularVelocity.magnitude * Mathf.Rad2Deg * stability / speed,
 			rigidbody.angularVelocity
-		) * transform.up;
-				
+			) * transform.up;
+		
 		Vector3 torqueVectorUp = Vector3.Cross (predictedUp, cameraRigibody.rotation * Vector3.up);
-
+		
 		Vector3 predictedForward = Quaternion.AngleAxis (
 			rigidbody.angularVelocity.magnitude * Mathf.Rad2Deg * stability / speed,
 			rigidbody.angularVelocity
-		) * transform.forward;
+			) * transform.forward;
 		
 		Vector3 torqueVectorForward = Vector3.Cross (predictedForward, cameraRigibody.rotation * Vector3.forward);
-
+		
 		rigidbody.AddTorque ((torqueVectorUp + torqueVectorForward) * speed * speed);
-	}
-	
-	void StablizePosition ()
-	{
-		transform.position = new Vector3 (
-			cameraRigibody.position.x,
-			Mathf.SmoothDamp (transform.position.y, 0.0f, ref yPositionCurrentVelocity, smoothTime),
-			Mathf.SmoothDamp (transform.position.z, 0.0f, ref zPositionCurrentVelocity, smoothTime)
-		);
-	}
-
-	void StablizeRotation ()
-	{
-		rigidbody.rotation = Quaternion.Euler (
-			Mathf.SmoothDamp (rigidbody.rotation.eulerAngles.x, 0.0f, ref xRotationCurrentVelocity, smoothTime),
-			Mathf.SmoothDamp (rigidbody.rotation.eulerAngles.y, 0.0f, ref yRotationCurrentVelocity, smoothTime),
-			cameraRigibody.rotation.eulerAngles.z
-		);
 	}
 }
