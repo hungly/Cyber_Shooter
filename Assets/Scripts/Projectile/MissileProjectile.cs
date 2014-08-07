@@ -32,6 +32,7 @@ public class MissileProjectile : MonoBehaviour
 
 			foreach (Collider c in colliders) {
 				if (c.tag != "LevelWalls" && c.tag != "Player" && c.tag != "MissileProjectile" &&
+				    c.tag != "LevelA" && c.tag != "LevelB" &&
 				    c.rigidbody != null) {
 					Debug.Log(c.tag);
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
