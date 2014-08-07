@@ -4,37 +4,48 @@ using System.Collections;
 public class MissileProjectile : MonoBehaviour
 {
 	public float shotForce;
-	public float enginePower;
+	public float engineForce;
+	public float maxSpeed;
 	public float explosionForce;
 	public float explosionRadius;
-	
+
 	void Start ()
 	{
 		rigidbody.useGravity = true;
-		rigidbody.AddForce ((transform.forward) * shotForce, ForceMode.Impulse);
-		StartCoroutine (turnOneEngine ());
+		rigidbody.AddForce (transform.forward * shotForce, ForceMode.Impulse);
+		StartCoroutine (StartEngine ());
 	}
 
-	void OnCollisionEnter (Collision collision)
+	void FixedUpdate ()
 	{
-		// if the bullet hit something that has a rigidbody
-		Destroy (gameObject);
-		
-		Collider[] colliders = Physics.OverlapSphere (collision.contacts [0].point, explosionRadius);
-		
-		foreach (Collider c in colliders) {
-			if (c.rigidbody != null) {
-				c.rigidbody.AddExplosionForce (explosionForce, collision.contacts [0].point, 3, 0, ForceMode.Impulse);
+		if (rigidbody.velocity.z < maxSpeed) {
+			rigidbody.AddForce (transform.forward * engineForce, ForceMode.Acceleration);
+		}
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.tag != "Player" && other.tag != "Boundary") {
+			Destroy (gameObject);
+
+			Collider[] colliders = Physics.OverlapSphere (rigidbody.position, explosionRadius);
+
+			foreach (Collider c in colliders) {
+				if (c.tag != "LevelWalls" && c.tag != "Player" && c.tag != "MissileProjectile" &&
+				    c.rigidbody != null) {
+					Debug.Log(c.tag);
+					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
+
+					Destroy(c.gameObject, 3);
+				}
 			}
 		}
 	}
 
-	IEnumerator turnOneEngine ()
+	IEnumerator StartEngine ()
 	{
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (0.25f);
 		rigidbody.useGravity = false;
 		rigidbody.velocity = Vector3.zero;
-		// add engine animation here and enjoy result
-		rigidbody.AddForce(transform.forward * enginePower, ForceMode.Acceleration);
 	}
 }

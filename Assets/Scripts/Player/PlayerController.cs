@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject bullet;
 	public GameObject ball;
 	public GameObject missile;
-	public GameObject birdshot;
+	public GameObject shotgun;
 	public GameObject laser;
 	// weapon point reference
 	public GameObject weaponPoint;
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 	public float speed;
 	public float positionSmoothTime;
 	// some projectile values
-	public float birdshotSpreadFactor;
+	public float shotgunSpreadFactor;
 	// screen size for correction
 	private Vector2 screenCorrection;
 	// position movement correction velocity
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 		// initiallize movement correction velocity
 		currentPositionVelocity = Vector3.zero;
 		// build projectiles array
-		projectiles = new GameObject[]{ball, missile, birdshot, laser};
+		projectiles = new GameObject[]{ball, missile, shotgun, laser};
 	}
 
 	void Update ()
@@ -53,13 +53,13 @@ public class PlayerController : MonoBehaviour
 					Vector2 touchPosition = Input.GetTouch (i).position - screenCorrection;
 
 					Vector3 bulletPosition = Vector3.zero;
-					Vector3 weaponMuzzleCorrection = new Vector3(0.0f,-0.25f, 1.5f);
+					Vector3 weaponMuzzleCorrection = new Vector3 (0.0f, -0.25f, 1.5f);
 
 					Quaternion angle = Quaternion.identity;
 
-					if (bullet.tag == "BirdshotProjectile") {
+					if (bullet.tag == "ShotgunProjectile") {
 						for (int j = 0; j < 5; j++) {
-							switch (j){
+							switch (j) {
 							case 1:
 								bulletPosition.x = -0.3f;
 								bulletPosition.y = 0.3f;
@@ -87,9 +87,9 @@ public class PlayerController : MonoBehaviour
 							// x from -maxPitch to maxPitch, positive is pitch down, negative is pitch up
 							// y from -maxYaw to maxYaw, positive is yaw right, negative is yaw left
 							angle = Quaternion.Euler (new Vector3 (
-								-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection + angleVary.x * birdshotSpreadFactor,
-								Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw + angleVary.y * birdshotSpreadFactor,
-								0.0f
+								-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection + angleVary.x * shotgunSpreadFactor,
+								Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw + angleVary.y * shotgunSpreadFactor,
+								rigidbody.rotation.eulerAngles.z
 							));
 							
 							// spawn the bullet with prepared information
@@ -100,9 +100,9 @@ public class PlayerController : MonoBehaviour
 						// x from -maxPitch to maxPitch, positive is pitch down, negative is pitch up
 						// y from -maxYaw to maxYaw, positive is yaw right, negative is yaw left
 						angle = Quaternion.Euler (new Vector3 (
-						-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection,
-						Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw,
-						0.0f
+							-Mathf.Atan2 (touchPosition.y, screenCorrection.y) * maxPitch - pitchCorrection,
+							Mathf.Atan2 (touchPosition.x, screenCorrection.x) * maxYaw,
+							rigidbody.rotation.eulerAngles.z
 						));
 
 						// spawn the bullet with prepared information

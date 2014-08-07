@@ -3,12 +3,16 @@ using System.Collections;
 
 public class GenerateByBoundary : MonoBehaviour
 {
-	public GameObject levelSegment;
+	public GameObject levelSegmentA;
+	public GameObject levelSegmentB;
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag == "Level") {
-			Instantiate (levelSegment, other.transform.position + Vector3.forward * 20, other.transform.rotation);
+		if (other.tag == "LevelA") {
+			Instantiate (levelSegmentB, other.transform.position + Vector3.forward * 20, other.transform.rotation);
+		}
+		if (other.tag == "LevelB") {
+			Instantiate (levelSegmentA, other.transform.position + Vector3.forward * 20, other.transform.rotation);
 		}
 	}
 }

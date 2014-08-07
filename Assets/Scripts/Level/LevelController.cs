@@ -7,6 +7,6 @@ public class LevelController : MonoBehaviour
 
 	void Update ()
 	{
-		transform.Translate (Vector3.down * levelSpeed * Time.deltaTime);
+		transform.Translate (Vector3.back * levelSpeed * Time.deltaTime);
 	}
 }
