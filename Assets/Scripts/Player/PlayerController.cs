@@ -20,24 +20,27 @@ public class PlayerController : MonoBehaviour
 	// stabilizer values
 	public float stability;
 	public float speed;
+	public float xPositionSmoothTime;
 	public float positionSmoothTime;
 	// some projectile values
 	public float shotgunSpreadFactor;
 	// screen size for correction
 	private Vector2 screenCorrection;
-	// position movement correction velocity
-	private Vector3 currentPositionVelocity;
 	// projectiles array
 	private GameObject[] projectiles;
+	// position movement correction velocity
+	private float currentXPositionVelocity;
+	private float currentYPositionVelocity;
+	private float currentZPositionVelocity;
 
 	void Start ()
 	{
 		// get the screen size to use for weapon correction
 		screenCorrection = new Vector2 (Screen.width / 2, Screen.height / 2);
-		// initiallize movement correction velocity
-		currentPositionVelocity = Vector3.zero;
 		// build projectiles array
 		projectiles = new GameObject[]{ball, missile, shotgun, laser};
+
+		rigidbody.position = new Vector3 (10, 10, 10);
 	}
 
 	void Update ()
@@ -126,18 +129,17 @@ public class PlayerController : MonoBehaviour
 	{
 		//transform.position = new Vector3 (cameraRigibody.position.x, 0.0f, 0.0f);
 
-		rigidbody.position = new Vector3 (
-			cameraRigibody.position.x,
-			rigidbody.position.y,
-			rigidbody.position.z
-		);
+		//rigidbody.position = new Vector3 (
+		//	cameraRigibody.position.x,
+		//	rigidbody.position.y,
+		//	rigidbody.position.z
+		//);
 
-		rigidbody.velocity = Vector3.SmoothDamp (
-			new Vector3 (rigidbody.position.x, rigidbody.position.y, rigidbody.position.z),
-			new Vector3 (rigidbody.position.x, 0.0f, 0.0f),
-			ref currentPositionVelocity,
-			positionSmoothTime
-		) * -1;
+		float xPosition = Mathf.SmoothDamp (rigidbody.position.x, cameraRigibody.position.x, ref currentXPositionVelocity, xPositionSmoothTime);
+		float yPosition = Mathf.SmoothDamp (rigidbody.position.y, 0.0f, ref currentYPositionVelocity, positionSmoothTime);
+		float zPosition = Mathf.SmoothDamp (rigidbody.position.z, 0.0f, ref currentZPositionVelocity, positionSmoothTime);
+
+		rigidbody.position = new Vector3 (xPosition, yPosition, zPosition);
 	}
 
 	void StabilizeRotation ()

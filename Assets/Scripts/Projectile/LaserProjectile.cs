@@ -12,7 +12,7 @@ public class LaserProjectile : MonoBehaviour
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag != "Player" && other.tag != "Boundary") {
+		if (other.tag != "Player" && other.tag != "Boundary" && other.tag != "LevelSegment") {
 			Destroy (gameObject);
 		}
 	}

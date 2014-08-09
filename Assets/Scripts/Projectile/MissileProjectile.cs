@@ -25,16 +25,14 @@ public class MissileProjectile : MonoBehaviour
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag != "Player" && other.tag != "Boundary") {
+		if (other.tag != "Player" && other.tag != "Boundary" && other.tag != "LevelSegment") {
 			Destroy (gameObject);
 
 			Collider[] colliders = Physics.OverlapSphere (rigidbody.position, explosionRadius);
 
 			foreach (Collider c in colliders) {
 				if (c.tag != "LevelWalls" && c.tag != "Player" && c.tag != "MissileProjectile" &&
-				    c.tag != "LevelA" && c.tag != "LevelB" &&
 				    c.rigidbody != null) {
-					Debug.Log(c.tag);
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
 
 					Destroy(c.gameObject, 3);
