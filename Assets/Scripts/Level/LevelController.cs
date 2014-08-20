@@ -13,20 +13,5 @@ public class LevelController : MonoBehaviour
 	{
 		transform.Translate (Vector3.back * levelSpeed * Time.deltaTime);
 		alpha = Mathf.Lerp (alpha, 1, Time.deltaTime * fadeSpeed);
-		FadeAll ();
-	}
-
-	void FadeAll ()
-	{
-		foreach (Transform o in transform) {
-			FadeInObject(o);
-		}
-	}
-
-	void FadeInObject (Transform o)
-	{
-		Color color = new Color (o.renderer.material.color.r, o.renderer.material.color.g,
-		                        o.renderer.material.color.b, alpha);
-		o.renderer.material.color = color;
 	}
 }

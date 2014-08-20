@@ -39,8 +39,6 @@ public class PlayerController : MonoBehaviour
 		screenCorrection = new Vector2 (Screen.width / 2, Screen.height / 2);
 		// build projectiles array
 		projectiles = new GameObject[]{ball, missile, shotgun, laser};
-
-		rigidbody.position = new Vector3 (10, 10, 10);
 	}
 
 	void Update ()
