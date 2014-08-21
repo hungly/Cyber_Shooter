@@ -3,8 +3,6 @@ using System.Collections;
 
 public class RiseFloorBlock : MonoBehaviour
 {
-
-	// Use this for initialization
 	void Start ()
 	{
 		foreach (Transform child in transform) {
@@ -13,11 +11,5 @@ public class RiseFloorBlock : MonoBehaviour
 				child.Translate (Vector3.up * riseAmount);
 			}
 		}
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
 	}
 }

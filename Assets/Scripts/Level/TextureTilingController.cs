@@ -3,8 +3,7 @@ using System.Collections;
 
 [ExecuteInEditMode]
 public class TextureTilingController : MonoBehaviour
-{
-	
+{	
 	// Give us the texture so that we can scale proportianally the width according to the height variable below
 	// We will grab it from the meshRenderer
 	public Texture texture;

@@ -119,20 +119,11 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate ()
 	{
 		StabilizePosition ();
-
 		StabilizeRotation ();
 	}
 	
 	void StabilizePosition ()
 	{
-		//transform.position = new Vector3 (cameraRigibody.position.x, 0.0f, 0.0f);
-
-		//rigidbody.position = new Vector3 (
-		//	cameraRigibody.position.x,
-		//	rigidbody.position.y,
-		//	rigidbody.position.z
-		//);
-
 		float xPosition = Mathf.SmoothDamp (rigidbody.position.x, cameraRigibody.position.x, ref currentXPositionVelocity, xPositionSmoothTime);
 		float yPosition = Mathf.SmoothDamp (rigidbody.position.y, 0.0f, ref currentYPositionVelocity, positionSmoothTime);
 		float zPosition = Mathf.SmoothDamp (rigidbody.position.z, 0.0f, ref currentZPositionVelocity, positionSmoothTime);

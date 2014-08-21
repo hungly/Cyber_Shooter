@@ -7,11 +7,9 @@ public class DestroyByContact : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "BallProjectile" ||
 			collision.gameObject.tag == "ShotgunProjectile" ||
-			collision.gameObject.tag == "LaserProjectile") {
-			Destroy (gameObject);
-		}
-
-		if (collision.gameObject.tag == "Player") {
+			collision.gameObject.tag == "LaserProjectile" ||
+		    collision.gameObject.tag == "MissileProjectile" ||
+			collision.gameObject.tag == "Player") {
 			Destroy (gameObject, 3);
 		}
 	}
@@ -19,12 +17,10 @@ public class DestroyByContact : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag == "BallProjectile" ||
-		    other.tag == "ShotgunProjectile" ||
-		    other.tag == "LaserProjectile") {
-			Destroy (gameObject);
-		}
-		
-		if (other.tag == "Player") {
+			other.tag == "ShotgunProjectile" ||
+			other.tag == "LaserProjectile" ||
+		    other.tag == "MissileProjectile" ||
+			other.tag == "Player") {
 			Destroy (gameObject, 3);
 		}
 	}
