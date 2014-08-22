@@ -4,16 +4,23 @@ using System.Collections;
 public class BallProjectileController : MonoBehaviour
 {
 	public float shotForce;
+	private int collisionFrame;
 
 	void Start ()
 	{
 		rigidbody.AddForce (transform.forward * shotForce, ForceMode.Impulse);
 	}
 
+	void OnCollisionEnter (Collision collision){
+			collisionFrame = Time.frameCount;
+	}
+
 	void OnCollisionStay (Collision collision)
 	{
-		if (-5.0f <= rigidbody.velocity.z && rigidbody.velocity.z <= 0.5f) {
-			rigidbody.AddForce (Vector3.back * 10, ForceMode.Acceleration);
+		if (collision.transform.tag == "LevelFloor" || collision.transform.tag == "LevelWall") {
+			if (Time.frameCount - collisionFrame > 20) {
+				Destroy (gameObject);
+			}
 		}
 	}
 }
