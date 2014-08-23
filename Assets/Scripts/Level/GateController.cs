@@ -15,7 +15,6 @@ public class GateController : MonoBehaviour
 	{
 		if (other.tag == "Player") {
 			openGate = true;
-			Debug.Log ("Open gate");
 			lowerGateOpenPosition = lowerGate.transform.position.y - gateOpenAmount;
 			upperGateOpenPosition = upperGate.transform.position.y + gateOpenAmount;
 		}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelController : MonoBehaviour
 {
-	public float levelSpeed = 10f;
+	public float levelSpeed = 5f;
 
 	void Update ()
 	{
