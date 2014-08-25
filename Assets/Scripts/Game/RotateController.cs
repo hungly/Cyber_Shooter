@@ -3,12 +3,13 @@ using System.Collections;
 
 public class RotateController : MonoBehaviour
 {
+	public float rotateSpeed = 100f;
 	private bool stopRotate = false;
 	// Update is called once per frame
 	void Update ()
 	{
 		if (!stopRotate) {
-			transform.Rotate (0, 100 * Time.deltaTime, 0);
+			transform.Rotate (0, rotateSpeed * Time.deltaTime, 0);
 		}
 	}
 
