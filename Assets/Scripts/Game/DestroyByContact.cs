@@ -3,11 +3,15 @@ using System.Collections;
 
 public class DestroyByContact : MonoBehaviour
 {
+	private GameObject effect;
+
 	void Start ()
 	{
 		if (rigidbody != null) {
 			rigidbody.useGravity = false;
 		}
+
+		effect = (GameObject)Resources.Load ("Effects/Levels/Destroy White");
 	}
 
 	void OnCollisionEnter (Collision collision)
@@ -17,6 +21,8 @@ public class DestroyByContact : MonoBehaviour
 			collision.gameObject.tag == "Pyramid" || collision.gameObject.tag == "Diamond" ||
 			collision.gameObject.tag == "Star" || collision.gameObject.tag == "Cube") {
 			Destroy (gameObject, 1);
+
+			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		
 		if (rigidbody != null) {
@@ -31,6 +37,8 @@ public class DestroyByContact : MonoBehaviour
 			other.tag == "Pyramid" || other.tag == "Diamond" ||
 			other.tag == "Star" || other.tag == "Cube") {
 			Destroy (gameObject, 1);
+
+			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		
 		if (rigidbody != null) {

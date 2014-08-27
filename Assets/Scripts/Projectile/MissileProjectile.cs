@@ -8,12 +8,17 @@ public class MissileProjectile : MonoBehaviour
 	public float maxSpeed;
 	public float explosionForce;
 	public float explosionRadius;
+	private GameObject effect;
+	private GameObject explosion;
 
 	void Start ()
 	{
 		rigidbody.useGravity = true;
 		rigidbody.AddForce (transform.forward * shotForce, ForceMode.Impulse);
 		StartCoroutine (StartEngine ());
+
+		effect = (GameObject)Resources.Load ("Effects/Levels/Destroy White");
+		explosion = (GameObject)Resources.Load ("Effects/Explosion");
 	}
 
 	void FixedUpdate ()
@@ -25,16 +30,23 @@ public class MissileProjectile : MonoBehaviour
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag != "Player" && other.tag != "Boundary" && other.tag != "LevelSegment") {
+		if (other.tag != "Player" && other.tag != "Boundary" && other.tag != "LevelSegment" 
+			&& other.tag != "Trigger" && other.tag != "PopupBlock" && other.tag != "LaserBeam") {
 			Destroy (gameObject);
+
+			Instantiate (explosion, transform.position, Quaternion.identity);
 
 			Collider[] colliders = Physics.OverlapSphere (rigidbody.position, explosionRadius);
 
 			foreach (Collider c in colliders) {
-				if (c.tag != "LevelWalls" && c.tag != "LevelWall" && c.tag != "LevelSegment" && c.rigidbody != null) {
+				if (c.tag != "LevelWalls" && c.tag != "LevelWall" && c.tag != "LevelSegment" 
+					&& c.tag != "LevelFloor" && c.tag != "Trigger" && c.tag != "PopupBlock"
+					&& c.tag != "LaserBeam" && c.rigidbody != null) {
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
 
 					Destroy (c.gameObject, 3);
+
+					Instantiate (effect, c.transform.position, Quaternion.identity);
 				}
 			}
 		}
