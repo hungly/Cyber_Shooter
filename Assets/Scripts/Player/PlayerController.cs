@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
 	public GameObject missile;
 	public GameObject shotgun;
 	public GameObject laser;
-	// weapon point reference
-	public GameObject weaponPoint;
 	// camera position
 	public Rigidbody cameraRigibody;
 	// weapon variables
@@ -26,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	public float shotgunSpreadFactor;
 	// screen size for correction
 	private Vector2 screenCorrection;
+	private Vector3 spawnPoint;
 	// projectiles array
 	private GameObject[] projectiles;
 	// position movement correction velocity
@@ -48,13 +47,15 @@ public class PlayerController : MonoBehaviour
 			// loop through all touch point
 			// this enable multi-touches for shooting
 			for (int i = 0; i < Input.touchCount; i++) {
+				// spawn point posittion
+				spawnPoint = new Vector3 (transform.position.x, transform.position.y, transform.position.z + 1);
+
 				// only activate when the touch action begin
 				if (Input.GetTouch (i).phase == TouchPhase.Began) {
 					// get the touch point, reset the point of origin at the middle of the screen
 					Vector2 touchPosition = Input.GetTouch (i).position - screenCorrection;
 
 					Vector3 bulletPosition = Vector3.zero;
-					Vector3 weaponMuzzleCorrection = new Vector3 (0.0f, -0.25f, 1.5f);
 
 					Quaternion angle = Quaternion.identity;
 
@@ -94,7 +95,7 @@ public class PlayerController : MonoBehaviour
 							));
 							
 							// spawn the bullet with prepared information
-							Instantiate (bullet, weaponPoint.transform.position + bulletPosition + weaponMuzzleCorrection, angle);
+							Instantiate (bullet, spawnPoint + bulletPosition, angle);
 						}
 					} else {
 						// calculate the shot angle with a little correction
@@ -107,10 +108,8 @@ public class PlayerController : MonoBehaviour
 						));
 
 						// spawn the bullet with prepared information
-						Instantiate (bullet, weaponPoint.transform.position + weaponMuzzleCorrection, angle);
+						Instantiate (bullet, spawnPoint, angle);
 					}
-
-					weaponPoint.transform.rotation = angle;
 				}
 			}
 		}

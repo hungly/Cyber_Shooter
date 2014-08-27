@@ -9,6 +9,7 @@ public class FallingColumnController : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag == "Player") {
+			Debug.Log(other.tag);
 			column.SetActive (true);
 
 			Debug.Log (other.transform.position);

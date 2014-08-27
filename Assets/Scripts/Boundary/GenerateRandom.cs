@@ -3,13 +3,18 @@ using System.Collections;
 
 public class GenerateRandom : MonoBehaviour
 {
-	public Object[] levelSegment = Resources.LoadAll("Prefabs/Leves/5");
+	private Object[] levelSegment;
 	private bool alreadySpawn = false;
+
+	void Start ()
+	{
+		levelSegment = Resources.LoadAll ("5");
+	}
 	
 	void OnTriggerEnter (Collider other)
 	{
-		int randomInt = Random.Range (0, levelSegment.Length - 1);
-		GameObject spawnObject = (GameObject) levelSegment[randomInt];
+		int randomInt = Random.Range (0, levelSegment.Length);
+		GameObject spawnObject = (GameObject)levelSegment [randomInt];
 		if (other.tag == "Boundary" && !alreadySpawn && spawnObject != null) {
 			Instantiate (spawnObject, transform.position + Vector3.forward * 20, other.transform.rotation);
 			alreadySpawn = true;

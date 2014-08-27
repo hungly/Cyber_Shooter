@@ -5,7 +5,6 @@ public class LaserHorizontalMoverController : MonoBehaviour
 {
 	public float speed = 1f;
 	private int xTarget;
-	private Vector3 currentVelocity = Vector3.zero;
 	private float startTime;
 	private float journeyLength;
 	private Vector3 endPoint;

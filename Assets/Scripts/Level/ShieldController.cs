@@ -6,7 +6,6 @@ public class ShieldController : MonoBehaviour
 	public float speed = 1f;
 	public int xOffsetLimit = 12;
 	private int xTarget;
-	private Vector3 currentVelocity = Vector3.zero;
 	private float startTime;
 	private float journeyLength;
 	private Vector3 endPoint;
