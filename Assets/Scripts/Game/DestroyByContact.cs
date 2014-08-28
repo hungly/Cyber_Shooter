@@ -23,10 +23,10 @@ public class DestroyByContact : MonoBehaviour
 			Destroy (gameObject, 1);
 
 			Instantiate (effect, transform.position, Quaternion.identity);
-
-			if (rigidbody != null) {
-				rigidbody.useGravity = true;
-			}
+		}
+		
+		if (rigidbody != null) {
+			rigidbody.useGravity = true;
 		}
 	}
 
@@ -39,10 +39,10 @@ public class DestroyByContact : MonoBehaviour
 			Destroy (gameObject, 1);
 
 			Instantiate (effect, transform.position, Quaternion.identity);
-
-			if (rigidbody != null) {
-				rigidbody.useGravity = true;
-			}
+		}
+		
+		if (rigidbody != null) {
+			rigidbody.useGravity = true;
 		}
 	}
 }

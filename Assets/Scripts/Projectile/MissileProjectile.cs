@@ -41,7 +41,7 @@ public class MissileProjectile : MonoBehaviour
 			foreach (Collider c in colliders) {
 				if (c.tag != "LevelWalls" && c.tag != "LevelWall" && c.tag != "LevelSegment" 
 					&& c.tag != "LevelFloor" && c.tag != "Trigger" && c.tag != "PopupBlock"
-					&& c.tag != "LaserBeam" && c.rigidbody != null) {
+					&& c.tag != "LaserBeam" && c.tag != "Player" && c.rigidbody != null) {
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
 
 					Destroy (c.gameObject, 3);

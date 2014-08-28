@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
+		pitchCorrection = bullet.tag == "BallProjectile" ? 0 : pitchCorrection;
 		// if there is a touch event
 		if (Input.touchCount > 0) {
 			// loop through all touch point
