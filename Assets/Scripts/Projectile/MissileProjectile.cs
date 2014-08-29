@@ -41,7 +41,8 @@ public class MissileProjectile : MonoBehaviour
 			foreach (Collider c in colliders) {
 				if (c.tag != "LevelWalls" && c.tag != "LevelWall" && c.tag != "LevelSegment" 
 					&& c.tag != "LevelFloor" && c.tag != "Trigger" && c.tag != "PopupBlock"
-					&& c.tag != "LaserBeam" && c.tag != "Player" && c.rigidbody != null) {
+					&& c.tag != "LaserBeam" && c.tag != "Player" && c.tag != "Pyramid"
+				    &&c.tag != "Diamond" && c.tag!="Star"&&c.rigidbody != null) {
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
 
 					Destroy (c.gameObject, 3);
@@ -58,4 +59,8 @@ public class MissileProjectile : MonoBehaviour
 		rigidbody.useGravity = false;
 		rigidbody.velocity = Vector3.zero;
 	}
+
+	public void explode(Rigidbody rigidbody){
+		rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
+		}
 }

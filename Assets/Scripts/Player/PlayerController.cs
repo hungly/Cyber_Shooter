@@ -44,12 +44,19 @@ public class PlayerController : MonoBehaviour
 	{
 		pitchCorrection = bullet.tag == "BallProjectile" ? 0 : pitchCorrection;
 		// if there is a touch event
-		if (Input.touchCount > 0) {
+		bool isGamePaused = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().IsGamePaused ();
+
+		if (Input.touchCount > 0 && !isGamePaused) {
 			// loop through all touch point
 			// this enable multi-touches for shooting
 			for (int i = 0; i < Input.touchCount; i++) {
 				// spawn point posittion
 				spawnPoint = new Vector3 (transform.position.x, transform.position.y, transform.position.z + 1);
+
+				if (Input.GetTouch (i).position.x > Screen.width - GameObject.FindWithTag ("PauseButton").guiTexture.pixelInset.width && 
+					Input.GetTouch (i).position.y > Screen.height - GameObject.FindWithTag ("PauseButton").guiTexture.pixelInset.height) {
+					continue;
+				}
 
 				// only activate when the touch action begin
 				if (Input.GetTouch (i).phase == TouchPhase.Began) {
@@ -97,6 +104,8 @@ public class PlayerController : MonoBehaviour
 							
 							// spawn the bullet with prepared information
 							Instantiate (bullet, spawnPoint + bulletPosition, angle);
+
+							GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
 						}
 					} else {
 						// calculate the shot angle with a little correction
@@ -110,6 +119,8 @@ public class PlayerController : MonoBehaviour
 
 						// spawn the bullet with prepared information
 						Instantiate (bullet, spawnPoint, angle);
+
+						GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
 					}
 				}
 			}
@@ -148,5 +159,21 @@ public class PlayerController : MonoBehaviour
 		Vector3 torqueVectorForward = Vector3.Cross (predictedForward, cameraRigibody.rotation * Vector3.forward);
 		
 		rigidbody.AddTorque ((torqueVectorUp + torqueVectorForward) * speed * speed);
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.tag != "BallProjectile" && other.tag != "ShotgunProjectile"
+			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile") {
+			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
+		}
+	}
+
+	void OnCollisionEnter (Collision collision)
+	{
+		if (collision.gameObject.tag != "BallProjectile" && collision.gameObject.tag != "ShotgunProjectile"
+			&& collision.gameObject.tag != "LaserProjectile" && collision.gameObject.tag != "MissileProjectile") {
+			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
+		}
 	}
 }
