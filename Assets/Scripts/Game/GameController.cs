@@ -90,7 +90,8 @@ public class GameController : MonoBehaviour
 
 	public void resetItemAchieved (){
 		itemAchieved = 0;
-
+	}
+	
 	public void resetItemShotConsecutivelyWithoutBeingHit ()
 	{
 		itemShotConsecutivelyWithoutBeingHit = 0;
