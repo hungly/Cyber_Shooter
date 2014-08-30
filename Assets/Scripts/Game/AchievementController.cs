@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuitToMainMenuController : MonoBehaviour
+public class AchievementController : MonoBehaviour
 {
 	public Texture2D normalTexture;
 	public Texture2D pressedTexture;
@@ -12,10 +12,7 @@ public class QuitToMainMenuController : MonoBehaviour
 			if (guiTexture.HitTest (Input.GetTouch (i).position)) {
 				if (Input.GetTouch (i).phase == TouchPhase.Ended || Input.GetTouch (i).phase == TouchPhase.Canceled || Input.GetTouch (i).phase == TouchPhase.Moved) {
 					guiTexture.texture = normalTexture;
-					if (Input.GetTouch (i).phase == TouchPhase.Ended) {
-						Application.LoadLevel ("Main Menu");
-						Time.timeScale = 1;
-					}
+					// put code to show achievement here
 				} else {
 					guiTexture.texture = pressedTexture;
 				}
