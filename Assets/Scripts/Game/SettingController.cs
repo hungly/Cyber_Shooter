@@ -12,6 +12,8 @@ public class SettingController : MonoBehaviour
 			if (guiTexture.HitTest (Input.GetTouch (i).position)) {
 				if (Input.GetTouch (i).phase == TouchPhase.Ended || Input.GetTouch (i).phase == TouchPhase.Canceled || Input.GetTouch (i).phase == TouchPhase.Moved) {
 					guiTexture.texture = normalTexture;
+					GameObject.FindWithTag("MainMenuController").GetComponent<MainMenuController>().SetIsRunning();
+					GameObject.FindWithTag("SettingMenu").GetComponent<SettingMenuController>().ToogleMenu();
 				} else {
 					guiTexture.texture = pressedTexture;
 				}
