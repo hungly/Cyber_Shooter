@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
 	private int itemAchieved = 0;
 	private int remainTimeForLaser = 10;
 	private float currentTime = 0;
+	private int maxLevel = 0;
 
 	void Start ()
 	{
@@ -175,5 +176,12 @@ public class GameController : MonoBehaviour
 	public void UpdateBulletsCount ()
 	{
 		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
+	}
+
+	public void increaseMaxLevel(){
+		if ( level > maxLevel) {
+			maxLevel = level;
+			PlayerPrefs.SetInt ("MaxLevel", maxLevel);
+		}
 	}
 }
