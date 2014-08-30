@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
 	void Start ()
 	{
+		Social.ReportProgress("CgkI68ebh5kcEAIQAQ",100.0f,(bool successs) => {});
 		// get the screen size to use for weapon correction
 		screenCorrection = new Vector2 (Screen.width / 2, Screen.height / 2);
 		// build projectiles array

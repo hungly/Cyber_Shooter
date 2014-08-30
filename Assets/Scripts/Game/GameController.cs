@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
 	private int accurateShotConsecutively = 0;
 	private int level;
 	private bool isGamePaused = false;
+	private int itemAchieved = 0;
 
 	void Start ()
 	{
@@ -52,7 +53,7 @@ public class GameController : MonoBehaviour
 		if (bullets == 0) {
 			calculateActualGamePlayed ();
 			Social.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQEA", (bool successs) => {});
-			Social.ReportProgress ("CgkI68ebh5kcEAIQDw", 100.0f, (bool success) => {});
+			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
 		}
 	}
 
@@ -72,9 +73,23 @@ public class GameController : MonoBehaviour
 	public void increaseItemShotConsecutivelyWithoutBeingHit ()
 	{
 		itemShotConsecutivelyWithoutBeingHit++;
-
+		
 		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("bullet-status-segment-" + itemShotConsecutivelyWithoutBeingHit);
+		if (itemShotConsecutivelyWithoutBeingHit == 10 && itemAchieved != 4) {
+			itemAchieved++;
+			if (itemAchieved == 1){
+				Social.ReportProgress("CgkI68ebh5kcEAIQCw",100.0f,(bool success) => {});
+			} else if (itemAchieved == 2){
+				Social.ReportProgress("CgkI68ebh5kcEAIQCQ",100.0f,(bool success) => {});
+			} else if (itemAchieved == 3){
+				Social.ReportProgress("CgkI68ebh5kcEAIQCg",100.0f,(bool success) => {});
+			}
+			resetItemShotConsecutivelyWithoutBeingHit();
+		}
 	}
+
+	public void resetItemAchieved (){
+		itemAchieved = 0;
 
 	public void resetItemShotConsecutivelyWithoutBeingHit ()
 	{
@@ -87,17 +102,32 @@ public class GameController : MonoBehaviour
 	{
 		missedShotConsecutively++;
 		accurateShotConsecutively = 0;
+		if (missedShotConsecutively == 10){
+			Social.ReportProgress("CgkI68ebh5kcEAIQDQ",100.0f, (bool success) =>{});
+		}
 	}
 
 	public void increaseAccurateShot ()
 	{
 		accurateShotConsecutively++;
 		missedShotConsecutively = 0;
+		if (accurateShotConsecutively == 10) {
+			Social.ReportProgress("CgkI68ebh5kcEAIQCA",100.0f, (bool success) =>{});
+		}
 	}
 
 	public void increaseLevel ()
 	{
 		level++;
+		if (level == 2) {
+			Social.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
+		} else if (level == 2) {
+			Social.ReportProgress("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
+		} else if (level == 4) {
+			Social.ReportProgress("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
+		} else if (level == 5) {
+			Social.ReportProgress("CgkI68ebh5kcEAIQBQ", 100.0f, (bool success) => {});
+		}
 	}
 
 	public bool IsGamePaused ()
