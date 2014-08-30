@@ -15,18 +15,35 @@ public class GameController : MonoBehaviour
 	private int level;
 	private bool isGamePaused = false;
 	private int itemAchieved = 0;
+	private int remainTimeForLaser = 10;
+	private float currentTime = 0;
 
 	void Start ()
 	{
 		PlayGamesPlatform.Activate ();
 
-		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
-		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("bullet-status-segment-" + itemShotConsecutivelyWithoutBeingHit);
+		UpdateBulletsCount ();
+		UpdateBulletIndicator ();
 	}
 
 	void Update ()
 	{
-	
+		if (itemAchieved == 3) {
+			if (currentTime == 0) {
+				currentTime = Time.time;
+			} else {
+				if (Time.time - currentTime >= remainTimeForLaser / 10) {
+					itemShotConsecutivelyWithoutBeingHit--;
+					currentTime = Time.time;
+				}
+				if (itemShotConsecutivelyWithoutBeingHit <= 0) {
+					itemShotConsecutivelyWithoutBeingHit = 0;
+					itemAchieved = 2;
+				}
+			}
+		}
+
+		UpdateBulletIndicator ();
 	}
 
 	public void setTimeStartGame ()
@@ -48,7 +65,7 @@ public class GameController : MonoBehaviour
 	{
 		bullets--;
 
-		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
+		UpdateBulletsCount ();
 
 		if (bullets == 0) {
 			calculateActualGamePlayed ();
@@ -66,44 +83,54 @@ public class GameController : MonoBehaviour
 		} else if (shotObject == "Star") {
 			bullets += 10;
 		}
-		Debug.Log (shotObject + " is shot, The number of bullet " + bullets);
-		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
+		UpdateBulletsCount ();
 	}
 
 	public void increaseItemShotConsecutivelyWithoutBeingHit ()
 	{
-		itemShotConsecutivelyWithoutBeingHit++;
-		
-		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("bullet-status-segment-" + itemShotConsecutivelyWithoutBeingHit);
-		if (itemShotConsecutivelyWithoutBeingHit == 10 && itemAchieved != 4) {
-			itemAchieved++;
-			if (itemAchieved == 1){
-				Social.ReportProgress("CgkI68ebh5kcEAIQCw",100.0f,(bool success) => {});
-			} else if (itemAchieved == 2){
-				Social.ReportProgress("CgkI68ebh5kcEAIQCQ",100.0f,(bool success) => {});
-			} else if (itemAchieved == 3){
-				Social.ReportProgress("CgkI68ebh5kcEAIQCg",100.0f,(bool success) => {});
+		if (itemAchieved < 3) {
+			itemShotConsecutivelyWithoutBeingHit++;
+
+			if (itemShotConsecutivelyWithoutBeingHit == 10 && itemAchieved != 4) {
+				itemAchieved++;
+				if (itemAchieved == 1) {
+					Social.ReportProgress ("CgkI68ebh5kcEAIQCw", 100.0f, (bool success) => {});
+				} else if (itemAchieved == 2) {
+					Social.ReportProgress ("CgkI68ebh5kcEAIQCQ", 100.0f, (bool success) => {});
+				} else if (itemAchieved == 3) {
+					Social.ReportProgress ("CgkI68ebh5kcEAIQCg", 100.0f, (bool success) => {});
+				}
+
+				if (itemAchieved != 3) {	
+					itemShotConsecutivelyWithoutBeingHit = 0;
+				}
 			}
-			resetItemShotConsecutivelyWithoutBeingHit();
 		}
 	}
 
-	public void resetItemAchieved (){
+	public int GetItemAchieved ()
+	{
+		return itemAchieved;
+	}
+
+	public void resetItemAchieved ()
+	{
 		itemAchieved = 0;
+	}
 
 	public void resetItemShotConsecutivelyWithoutBeingHit ()
 	{
 		itemShotConsecutivelyWithoutBeingHit = 0;
 
-		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("bullet-status-segment-" + itemShotConsecutivelyWithoutBeingHit);
+		itemAchieved = 0;
 	}
 
 	public void increaseMissedShot ()
 	{
 		missedShotConsecutively++;
 		accurateShotConsecutively = 0;
-		if (missedShotConsecutively == 10){
-			Social.ReportProgress("CgkI68ebh5kcEAIQDQ",100.0f, (bool success) =>{});
+		if (missedShotConsecutively == 10) {
+			Social.ReportProgress ("CgkI68ebh5kcEAIQDQ", 100.0f, (bool success) => {});
 		}
 	}
 
@@ -112,7 +139,7 @@ public class GameController : MonoBehaviour
 		accurateShotConsecutively++;
 		missedShotConsecutively = 0;
 		if (accurateShotConsecutively == 10) {
-			Social.ReportProgress("CgkI68ebh5kcEAIQCA",100.0f, (bool success) =>{});
+			Social.ReportProgress ("CgkI68ebh5kcEAIQCA", 100.0f, (bool success) => {});
 		}
 	}
 
@@ -122,11 +149,11 @@ public class GameController : MonoBehaviour
 		if (level == 2) {
 			Social.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
 		} else if (level == 2) {
-			Social.ReportProgress("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
+			Social.ReportProgress ("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
 		} else if (level == 4) {
-			Social.ReportProgress("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
+			Social.ReportProgress ("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
 		} else if (level == 5) {
-			Social.ReportProgress("CgkI68ebh5kcEAIQBQ", 100.0f, (bool success) => {});
+			Social.ReportProgress ("CgkI68ebh5kcEAIQBQ", 100.0f, (bool success) => {});
 		}
 	}
 
@@ -138,5 +165,15 @@ public class GameController : MonoBehaviour
 	public void changeGamePausedStatus ()
 	{
 		isGamePaused = !isGamePaused;
+	}
+
+	public void UpdateBulletIndicator ()
+	{
+		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("button-projectile-process-" + itemShotConsecutivelyWithoutBeingHit);
+	}
+
+	public void UpdateBulletsCount ()
+	{
+		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
 	}
 }

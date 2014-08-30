@@ -34,11 +34,11 @@ public class PlayerController : MonoBehaviour
 
 	void Start ()
 	{
-		Social.ReportProgress("CgkI68ebh5kcEAIQAQ",100.0f,(bool successs) => {});
+		Social.ReportProgress ("CgkI68ebh5kcEAIQAQ", 100.0f, (bool successs) => {});
 		// get the screen size to use for weapon correction
 		screenCorrection = new Vector2 (Screen.width / 2, Screen.height / 2);
 		// build projectiles array
-		projectiles = new GameObject[]{ball, missile, shotgun, laser};
+		projectiles = new GameObject[]{ball,  shotgun,missile, laser};
 	}
 
 	void Update ()
@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 		bool isGamePaused = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().IsGamePaused ();
 
 		if (Input.touchCount > 0 && !isGamePaused) {
+			int projectileType = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().GetItemAchieved();
+
 			// loop through all touch point
 			// this enable multi-touches for shooting
 			for (int i = 0; i < Input.touchCount; i++) {
@@ -68,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
 					Quaternion angle = Quaternion.identity;
 
-					if (bullet.tag == "ShotgunProjectile") {
+					if (projectiles [projectileType].tag == "ShotgunProjectile") {
 						for (int j = 0; j < 5; j++) {
 							switch (j) {
 							case 1:
@@ -104,9 +106,7 @@ public class PlayerController : MonoBehaviour
 							));
 							
 							// spawn the bullet with prepared information
-							Instantiate (bullet, spawnPoint + bulletPosition, angle);
-
-							GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
+							Instantiate (projectiles [projectileType], spawnPoint + bulletPosition, angle);
 						}
 					} else {
 						// calculate the shot angle with a little correction
@@ -119,10 +119,10 @@ public class PlayerController : MonoBehaviour
 						));
 
 						// spawn the bullet with prepared information
-						Instantiate (bullet, spawnPoint, angle);
+						Instantiate (projectiles [projectileType], spawnPoint, angle);
 
-						GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
 					}
+					GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
 				}
 			}
 		}
@@ -161,11 +161,12 @@ public class PlayerController : MonoBehaviour
 		
 		rigidbody.AddTorque ((torqueVectorUp + torqueVectorForward) * speed * speed);
 	}
-
+/*
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag != "BallProjectile" && other.tag != "ShotgunProjectile"
-			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile") {
+			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile"
+			&& other.tag != "Trigger" && other.tag != "PopupBlock") {
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
 		}
 	}
@@ -173,8 +174,10 @@ public class PlayerController : MonoBehaviour
 	void OnCollisionEnter (Collision collision)
 	{
 		if (collision.gameObject.tag != "BallProjectile" && collision.gameObject.tag != "ShotgunProjectile"
-			&& collision.gameObject.tag != "LaserProjectile" && collision.gameObject.tag != "MissileProjectile") {
+			&& collision.gameObject.tag != "LaserProjectile" && collision.gameObject.tag != "MissileProjectile"
+			&& collision.gameObject.tag != "Trigger" && collision.gameObject.tag != "PopupBlock") {
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
 		}
 	}
+	*/
 }
