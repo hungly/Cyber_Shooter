@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour
 		level++;
 		if (level == 2) {
 			Social.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
-		} else if (level == 2) {
+		} else if (level == 3) {
 			Social.ReportProgress ("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
 		} else if (level == 4) {
 			Social.ReportProgress ("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
