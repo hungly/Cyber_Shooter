@@ -169,18 +169,17 @@ public class PlayerController : MonoBehaviour
 		
 		rigidbody.AddTorque ((torqueVectorUp + torqueVectorForward) * speed * speed);
 	}
-/*
+
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag != "BallProjectile" && other.tag != "ShotgunProjectile"
 			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile"
-			&& other.tag != "Trigger" && other.tag != "PopupBlock") {
+			&& other.tag != "Trigger" && other.tag != "PopupBlock" && other.tag != "Boundary") {
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
 
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
-			
-			audio.clip = (AudioClip)Resources.Load("ship-hit");
-			audio.Play();
+
+			audio.Play ();
 		}
 	}
 
@@ -192,10 +191,9 @@ public class PlayerController : MonoBehaviour
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
 			
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
-			
-			audio.clip = (AudioClip)Resources.Load("ship-hit");
-			audio.Play();
+
+			audio.clip = (AudioClip)Resources.Load ("ship-hit");
+			audio.Play ();
 		}
 	}
-	*/
 }

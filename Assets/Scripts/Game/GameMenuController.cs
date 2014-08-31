@@ -122,6 +122,9 @@ public class GameMenuController : MonoBehaviour
 		}
 
 		if (gameOverScreen) {
+			Time.timeScale=0;
+			//GameObject.FindWithTag ("GameController").GetComponent<GameController> ().changeGamePausedStatus ();
+
 			GUI.Box (new Rect (0, 0, Screen.width, Screen.height), "", background);
 			
 			GUI.Box (new Rect (Screen.width / 2 - frameStyle.fixedWidth / 2, Screen.height / 2 - frameStyle.fixedWidth / 2, frameStyle.fixedWidth, frameStyle.fixedHeight), "", frameStyle);
@@ -138,6 +141,7 @@ public class GameMenuController : MonoBehaviour
 				Time.timeScale = 1;
 				TootgleGameOverScreen();
 				Application.LoadLevel ("Level 1");
+				GameObject.FindWithTag ("GameController").GetComponent<GameController> ().changeGamePausedStatus ();
 				audio.Play ();
 			}
 
@@ -145,6 +149,7 @@ public class GameMenuController : MonoBehaviour
 				Time.timeScale = 1;
 				TootgleGameOverScreen();
 				Application.LoadLevel ("Main Menu");
+				GameObject.FindWithTag ("GameController").GetComponent<GameController> ().changeGamePausedStatus ();
 				audio.Play ();
 			}
 		}
