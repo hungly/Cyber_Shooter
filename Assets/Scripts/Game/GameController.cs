@@ -17,21 +17,26 @@ public class GameController : MonoBehaviour
 	private int itemAchieved = 0;
 	private int remainTimeForLaser = 10;
 	private float currentTime = 0;
+	private float defaultVolume;
+	private float defaultVolumeMusic;
 
-	public int GetLevel(){
+	public int GetLevel ()
+	{
 		return level;
 	}
 
 	void Start ()
 	{
 		PlayGamesPlatform.Activate ();
-
-		UpdateBulletsCount ();
-		UpdateBulletIndicator ();
+		defaultVolume = upgradeSound.volume;
+		defaultVolumeMusic = audio.volume;
 	}
 
 	void Update ()
 	{
+		upgradeSound.volume = defaultVolume * (PlayerPrefs.HasKey ("sfxvol") ? PlayerPrefs.GetFloat ("sfxvol") : 0.5f);
+		audio.volume = defaultVolumeMusic * (PlayerPrefs.HasKey ("musicvol") ? PlayerPrefs.GetFloat ("musicvol") : 0.5f);
+
 		if (itemAchieved == 3) {
 			if (currentTime == 0) {
 				currentTime = Time.time;
@@ -46,8 +51,6 @@ public class GameController : MonoBehaviour
 				}
 			}
 		}
-
-		UpdateBulletIndicator ();
 	}
 
 	public void setTimeStartGame ()
@@ -60,21 +63,28 @@ public class GameController : MonoBehaviour
 		timePlayed = Time.time - timeStartGame;
 	}
 
+	public float GetPlayedTime ()
+	{
+		calculateActualGamePlayed ();
+		return timePlayed;
+	}
+
 	public int getBullets ()
 	{
 		return bullets;
 	}
 
-	public void bulletShot ()
+	public void bulletShot (int numShot)
 	{
-		bullets--;
+		bullets -= numShot;
 
-		UpdateBulletsCount ();
-
-		if (bullets == 0) {
+		if (bullets <= 0) {
+			bullets = 0;
 			calculateActualGamePlayed ();
 			Social.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQEA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
+
+			GameObject.FindWithTag ("PauseButton").GetComponent<GameMenuController> ().TootgleGameOverScreen ();
 		}
 	}
 
@@ -87,7 +97,6 @@ public class GameController : MonoBehaviour
 		} else if (shotObject == "Star") {
 			bullets += 10;
 		}
-		UpdateBulletsCount ();
 	}
 
 	public void increaseItemShotConsecutivelyWithoutBeingHit ()
@@ -97,7 +106,7 @@ public class GameController : MonoBehaviour
 
 			if (itemShotConsecutivelyWithoutBeingHit == 10 && itemAchieved != 4) {
 				itemAchieved++;
-				upgradeSound.Play();
+				upgradeSound.Play ();
 				if (itemAchieved == 1) {
 					Social.ReportProgress ("CgkI68ebh5kcEAIQCw", 100.0f, (bool success) => {});
 				} else if (itemAchieved == 2) {
@@ -121,7 +130,7 @@ public class GameController : MonoBehaviour
 	public void resetItemAchieved ()
 	{
 		itemAchieved = 0;
-		upgradeSound.Play();
+		upgradeSound.Play ();
 	}
 
 	public void resetItemShotConsecutivelyWithoutBeingHit ()
@@ -173,13 +182,8 @@ public class GameController : MonoBehaviour
 		isGamePaused = !isGamePaused;
 	}
 
-	public void UpdateBulletIndicator ()
+	public int GetItemShotConsecutivelyWithoutBeingHit ()
 	{
-		GameObject.FindWithTag ("BulletHitIndicator").guiTexture.texture = (Texture2D)Resources.Load ("button-projectile-process-" + itemShotConsecutivelyWithoutBeingHit);
-	}
-
-	public void UpdateBulletsCount ()
-	{
-		GameObject.FindWithTag ("BulletCount").guiText.text = "" + bullets;
+		return itemShotConsecutivelyWithoutBeingHit;
 	}
 }

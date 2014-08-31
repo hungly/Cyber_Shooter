@@ -5,10 +5,18 @@ public class MainMenuController : MonoBehaviour
 {
 	public Transform levelPresenter;
 	private bool isRunning = true;
+	private float defaultVolume;
+
+	void Start ()
+	{
+		defaultVolume = audio.volume;
+	}
 
 	// Update is called once per frame
 	void Update ()
 	{
+		audio.volume = defaultVolume * (PlayerPrefs.HasKey ("musicvol") ? PlayerPrefs.GetFloat ("musicvol") : 0.5f);
+
 		if (isRunning) {
 			if (Input.touchCount > 0) {
 				Touch touchPoint = Input.GetTouch (0);

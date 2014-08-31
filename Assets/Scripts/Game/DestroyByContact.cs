@@ -48,7 +48,7 @@ public class DestroyByContact : MonoBehaviour
 			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		
-		if (rigidbody != null) {
+		if (rigidbody != null && collision.gameObject.tag != "LevelFloor") {
 			rigidbody.useGravity = true;
 		}
 	}
@@ -76,7 +76,7 @@ public class DestroyByContact : MonoBehaviour
 			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		
-		if (rigidbody != null) {
+		if (rigidbody != null && other.tag != "LevelFloor") {
 			rigidbody.useGravity = true;
 		}
 	}

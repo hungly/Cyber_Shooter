@@ -10,9 +10,17 @@ public class GateController : MonoBehaviour
 	private bool openGate = false;
 	private float lowerGateOpenPosition;
 	private float upperGateOpenPosition;
+	private float defaultVolume;
+
+	void Start ()
+	{
+		defaultVolume = audio.volume;
+	}
 
 	void OnTriggerEnter (Collider other)
 	{
+		audio.volume = defaultVolume * (PlayerPrefs.HasKey ("sfxvol") ? PlayerPrefs.GetFloat ("sfxvol") : 0.5f);
+		audio.Play ();
 		if (other.tag == "Player") {
 			openGate = true;
 			lowerGateOpenPosition = lowerGate.transform.position.y - gateOpenAmount;

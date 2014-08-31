@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	private float currentXPositionVelocity;
 	private float currentYPositionVelocity;
 	private float currentZPositionVelocity;
+	private float defaultVolume;
 
 	void Start ()
 	{
@@ -39,10 +40,13 @@ public class PlayerController : MonoBehaviour
 		screenCorrection = new Vector2 (Screen.width / 2, Screen.height / 2);
 		// build projectiles array
 		projectiles = new GameObject[]{ball,  shotgun,missile, laser};
+		defaultVolume = audio.volume;
 	}
 
 	void Update ()
 	{
+		audio.volume = defaultVolume * (PlayerPrefs.HasKey ("sfxvol") ? PlayerPrefs.GetFloat ("sfxvol") : 0.5f);
+
 		pitchCorrection = bullet.tag == "BallProjectile" ? 0 : pitchCorrection;
 		// if there is a touch event
 		bool isGamePaused = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().IsGamePaused ();
@@ -56,8 +60,8 @@ public class PlayerController : MonoBehaviour
 				// spawn point posittion
 				spawnPoint = new Vector3 (transform.position.x, transform.position.y, transform.position.z + 1);
 
-				if (Input.GetTouch (i).position.x > Screen.width - GameObject.FindWithTag ("PauseButton").guiTexture.pixelInset.width && 
-					Input.GetTouch (i).position.y > Screen.height - GameObject.FindWithTag ("PauseButton").guiTexture.pixelInset.height) {
+				if (Input.GetTouch (i).position.x > Screen.width - GameObject.FindWithTag ("PauseButton").GetComponent<GameMenuController> ().pauseButtonStyle.fixedWidth && 
+					Input.GetTouch (i).position.y > Screen.height - GameObject.FindWithTag ("PauseButton").GetComponent<GameMenuController> ().pauseButtonStyle.fixedHeight) {
 					continue;
 				}
 
@@ -122,7 +126,7 @@ public class PlayerController : MonoBehaviour
 						Instantiate (projectiles [projectileType], spawnPoint, angle);
 
 					}
-					GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
+					GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (1);
 
 					audio.clip = (AudioClip)Resources.Load ("projectile-" + projectileType);
 
@@ -171,6 +175,8 @@ public class PlayerController : MonoBehaviour
 		if (other.tag != "BallProjectile" && other.tag != "ShotgunProjectile"
 			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile"
 			&& other.tag != "Trigger" && other.tag != "PopupBlock") {
+			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
+
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
 			
 			audio.clip = (AudioClip)Resources.Load("ship-hit");
@@ -183,6 +189,8 @@ public class PlayerController : MonoBehaviour
 		if (collision.gameObject.tag != "BallProjectile" && collision.gameObject.tag != "ShotgunProjectile"
 			&& collision.gameObject.tag != "LaserProjectile" && collision.gameObject.tag != "MissileProjectile"
 			&& collision.gameObject.tag != "Trigger" && collision.gameObject.tag != "PopupBlock") {
+			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
+			
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
 			
 			audio.clip = (AudioClip)Resources.Load("ship-hit");

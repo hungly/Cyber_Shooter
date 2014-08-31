@@ -5,10 +5,12 @@ public class ShotgunProjectile : MonoBehaviour
 {
 	public float shotForce;
 	private int collisionFrame;
+	private float defaultVolume;
 
 	void Start ()
 	{
 		rigidbody.AddForce (transform.forward * shotForce, ForceMode.Impulse);
+		defaultVolume = audio.volume;
 	}
 	
 	void OnCollisionEnter (Collision collision)
@@ -16,9 +18,10 @@ public class ShotgunProjectile : MonoBehaviour
 		collisionFrame = Time.frameCount;
 
 		if (collision.gameObject.tag == "Cube" || collision.gameObject.tag == "Diamond" ||
-		    collision.gameObject.tag == "Pyramid" || collision.gameObject.tag == "Star" ||
-		    collision.gameObject.tag == "BallProjectile" || collision.gameObject.tag == "ShotgunProjectile" ||
-		    collision.gameObject.tag == "MissileProjectile" || collision.gameObject.tag == "LaserProjectile") {
+			collision.gameObject.tag == "Pyramid" || collision.gameObject.tag == "Star" ||
+			collision.gameObject.tag == "BallProjectile" || collision.gameObject.tag == "ShotgunProjectile" ||
+			collision.gameObject.tag == "MissileProjectile" || collision.gameObject.tag == "LaserProjectile") {
+			audio.volume = defaultVolume * (PlayerPrefs.HasKey ("sfxvol") ? PlayerPrefs.GetFloat ("sfxvol") : 0.5f);
 			audio.Play ();
 		}
 	}

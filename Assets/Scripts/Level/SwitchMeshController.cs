@@ -13,8 +13,6 @@ public class SwitchMeshController : MonoBehaviour
 			other.tag != "LevelSegment") {
 			normal.SetActive (false);
 			destructable.SetActive (true);
-
-			Debug.Log (other.tag);
 		}
 	}
 }

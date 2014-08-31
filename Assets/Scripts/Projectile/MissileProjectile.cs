@@ -10,6 +10,7 @@ public class MissileProjectile : MonoBehaviour
 	public float explosionRadius;
 	private GameObject effect;
 	private GameObject explosion;
+	private float defaultVolume;
 
 	void Start ()
 	{
@@ -19,10 +20,13 @@ public class MissileProjectile : MonoBehaviour
 
 		effect = (GameObject)Resources.Load ("Effects/Levels/Destroy White");
 		explosion = (GameObject)Resources.Load ("Effects/Explosion");
+		defaultVolume = audio.volume;
 	}
 
 	void FixedUpdate ()
 	{
+		audio.volume = defaultVolume * (PlayerPrefs.HasKey ("sfxvol") ? PlayerPrefs.GetFloat ("sfxvol") : 0.5f);
+
 		if (rigidbody.velocity.z < maxSpeed) {
 			rigidbody.AddForce (transform.forward * engineForce, ForceMode.Acceleration);
 		}
