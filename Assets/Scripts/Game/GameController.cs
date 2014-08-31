@@ -21,7 +21,6 @@ public class GameController : MonoBehaviour
 
 	void Start ()
 	{
-		PlayGamesPlatform.Activate ();
 
 		UpdateBulletsCount ();
 		UpdateBulletIndicator ();
@@ -183,5 +182,13 @@ public class GameController : MonoBehaviour
 			maxLevel = level;
 			PlayerPrefs.SetInt ("MaxLevel", maxLevel);
 		}
+	}
+
+	public void getMaxLevel(){
+		return maxLevel;
+	}
+
+	public void setMaxLevelAtStart(){
+		maxLevel = PlayerPrefs.GetInt ("MaxLevel");
 	}
 }
