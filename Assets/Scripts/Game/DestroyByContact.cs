@@ -11,8 +11,6 @@ public class DestroyByContact : MonoBehaviour
 		if (rigidbody != null) {
 			rigidbody.useGravity = false;
 		}
-
-		effect = (GameObject)Resources.Load ("Effects/Levels/Destroy White");
 	}
 
 	void OnCollisionEnter (Collision collision)
@@ -46,6 +44,7 @@ public class DestroyByContact : MonoBehaviour
 				collision.gameObject.GetComponent<MissileProjectile> ().explode (rigidbody);
 			}
 
+			effect = (GameObject)Resources.Load ("Effects/Levels/Destroy " + GameObject.FindWithTag ("GameController").GetComponent<GameController> ().GetLevel ());
 			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		
@@ -73,6 +72,7 @@ public class DestroyByContact : MonoBehaviour
 				other.gameObject.GetComponent<MissileProjectile> ().explode (rigidbody);
 			}
 
+			effect = (GameObject)Resources.Load ("Effects/Levels/Destroy " + GameObject.FindWithTag ("GameController").GetComponent<GameController> ().GetLevel ());
 			Instantiate (effect, transform.position, Quaternion.identity);
 		}
 		

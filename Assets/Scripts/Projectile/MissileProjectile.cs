@@ -31,7 +31,8 @@ public class MissileProjectile : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag != "Player" && other.tag != "Boundary" && other.tag != "LevelSegment" 
-			&& other.tag != "Trigger" && other.tag != "PopupBlock" && other.tag != "LaserBeam") {
+			&& other.tag != "Trigger" && other.tag != "PopupBlock" && other.tag != "LaserBeam"
+			&& other.tag != "MissileProjectile") {
 			Destroy (gameObject);
 
 			Instantiate (explosion, transform.position, Quaternion.identity);
@@ -42,7 +43,7 @@ public class MissileProjectile : MonoBehaviour
 				if (c.tag != "LevelWalls" && c.tag != "LevelWall" && c.tag != "LevelSegment" 
 					&& c.tag != "LevelFloor" && c.tag != "Trigger" && c.tag != "PopupBlock"
 					&& c.tag != "LaserBeam" && c.tag != "Player" && c.tag != "Pyramid"
-				    &&c.tag != "Diamond" && c.tag!="Star"&&c.rigidbody != null) {
+					&& c.tag != "Diamond" && c.tag != "Star" && c.rigidbody != null) {
 					c.rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
 
 					Destroy (c.gameObject, 3);
@@ -58,9 +59,11 @@ public class MissileProjectile : MonoBehaviour
 		yield return new WaitForSeconds (0.25f);
 		rigidbody.useGravity = false;
 		rigidbody.velocity = Vector3.zero;
+		audio.Play ();
 	}
 
-	public void explode(Rigidbody rigidbody){
+	public void explode (Rigidbody rigidbody)
+	{
 		rigidbody.AddExplosionForce (explosionForce, rigidbody.position, explosionRadius, 0, ForceMode.Impulse);
-		}
+	}
 }

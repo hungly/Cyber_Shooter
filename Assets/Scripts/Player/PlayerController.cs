@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 		bool isGamePaused = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().IsGamePaused ();
 
 		if (Input.touchCount > 0 && !isGamePaused) {
-			int projectileType = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().GetItemAchieved();
+			int projectileType = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().GetItemAchieved ();
 
 			// loop through all touch point
 			// this enable multi-touches for shooting
@@ -123,6 +123,10 @@ public class PlayerController : MonoBehaviour
 
 					}
 					GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot ();
+
+					audio.clip = (AudioClip)Resources.Load ("projectile-" + projectileType);
+
+					audio.Play ();
 				}
 			}
 		}
@@ -168,6 +172,9 @@ public class PlayerController : MonoBehaviour
 			&& other.tag != "LaserProjectile" && other.tag != "MissileProjectile"
 			&& other.tag != "Trigger" && other.tag != "PopupBlock") {
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
+			
+			audio.clip = (AudioClip)Resources.Load("ship-hit");
+			audio.Play();
 		}
 	}
 
@@ -177,6 +184,9 @@ public class PlayerController : MonoBehaviour
 			&& collision.gameObject.tag != "LaserProjectile" && collision.gameObject.tag != "MissileProjectile"
 			&& collision.gameObject.tag != "Trigger" && collision.gameObject.tag != "PopupBlock") {
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
+			
+			audio.clip = (AudioClip)Resources.Load("ship-hit");
+			audio.Play();
 		}
 	}
 	*/

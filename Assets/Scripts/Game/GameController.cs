@@ -5,7 +5,7 @@ using UnityEngine.SocialPlatforms;
 
 public class GameController : MonoBehaviour
 {
-	
+	public AudioSource upgradeSound;
 	private float timePlayed = 0;
 	private float timeStartGame = 0;
 	private int bullets = 50;
@@ -17,6 +17,10 @@ public class GameController : MonoBehaviour
 	private int itemAchieved = 0;
 	private int remainTimeForLaser = 10;
 	private float currentTime = 0;
+
+	public int GetLevel(){
+		return level;
+	}
 
 	void Start ()
 	{
@@ -93,6 +97,7 @@ public class GameController : MonoBehaviour
 
 			if (itemShotConsecutivelyWithoutBeingHit == 10 && itemAchieved != 4) {
 				itemAchieved++;
+				upgradeSound.Play();
 				if (itemAchieved == 1) {
 					Social.ReportProgress ("CgkI68ebh5kcEAIQCw", 100.0f, (bool success) => {});
 				} else if (itemAchieved == 2) {
@@ -116,6 +121,7 @@ public class GameController : MonoBehaviour
 	public void resetItemAchieved ()
 	{
 		itemAchieved = 0;
+		upgradeSound.Play();
 	}
 
 	public void resetItemShotConsecutivelyWithoutBeingHit ()

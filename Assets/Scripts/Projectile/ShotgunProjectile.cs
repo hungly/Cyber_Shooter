@@ -11,8 +11,16 @@ public class ShotgunProjectile : MonoBehaviour
 		rigidbody.AddForce (transform.forward * shotForce, ForceMode.Impulse);
 	}
 	
-	void OnCollisionEnter (Collision collision){
-			collisionFrame = Time.frameCount;
+	void OnCollisionEnter (Collision collision)
+	{
+		collisionFrame = Time.frameCount;
+
+		if (collision.gameObject.tag == "Cube" || collision.gameObject.tag == "Diamond" ||
+		    collision.gameObject.tag == "Pyramid" || collision.gameObject.tag == "Star" ||
+		    collision.gameObject.tag == "BallProjectile" || collision.gameObject.tag == "ShotgunProjectile" ||
+		    collision.gameObject.tag == "MissileProjectile" || collision.gameObject.tag == "LaserProjectile") {
+			audio.Play ();
+		}
 	}
 	
 	void OnCollisionStay (Collision collision)
