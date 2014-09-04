@@ -5,8 +5,10 @@ using GooglePlayGames;
 public class MainMenuController : MonoBehaviour
 {
 	public Transform levelPresenter;
+	public AudioSource guiClick;
 	private bool isRunning = true;
 	private float defaultVolume;
+	private Vector3 initialPoint = Vector3.zero;
 
 	void Start ()
 	{
@@ -23,11 +25,19 @@ public class MainMenuController : MonoBehaviour
 			if (Input.touchCount > 0) {
 				Touch touchPoint = Input.GetTouch (0);
 
+				if (touchPoint.phase == TouchPhase.Began) {
+					initialPoint = Camera.main.ScreenToWorldPoint (new Vector3 (touchPoint.position.x, touchPoint.position.y, 10));
+				}
+
 				if (touchPoint.phase == TouchPhase.Moved) {
+					Vector3 curentPoint = Camera.main.ScreenToWorldPoint (new Vector3 (touchPoint.position.x, touchPoint.position.y, 10));
+
+					float moveAmount = (curentPoint.x - initialPoint.x) * Time.deltaTime * 5;
+					Debug.Log ("Begin: " + initialPoint + " End: " + curentPoint + " Amount: " + moveAmount);
 					levelPresenter.position = new Vector3 (
-					Mathf.Clamp (transform.position.x - touchPoint.deltaPosition.x * 0.1f, -29, -5),
-					levelPresenter.position.y,
-					levelPresenter.position.z
+						Mathf.Clamp (levelPresenter.position.x + moveAmount, -29, -5),
+						levelPresenter.position.y,
+						levelPresenter.position.z
 					);
 				}
 
@@ -37,14 +47,19 @@ public class MainMenuController : MonoBehaviour
 					// touch a level label
 				
 					if (touchPoint.phase == TouchPhase.Ended && hit.collider.tag.StartsWith ("Level")) {
-						Application.LoadLevel (hit.collider.tag);
-						GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().setTimeStartGame();
-
+						guiClick.Play ();
+						StartCoroutine (StartLevel (hit.collider.tag));
 					}
 				}
 				
 			}
 		}
+	}
+
+	IEnumerator StartLevel (string levelName)
+	{
+		yield return new WaitForSeconds (0.5f);
+		Application.LoadLevel (levelName);
 	}
 
 	public void SetIsRunning ()

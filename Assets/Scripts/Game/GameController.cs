@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
 		PlayGamesPlatform.Activate ();
 		defaultVolume = upgradeSound.volume;
 		defaultVolumeMusic = audio.volume;
+		timeStartGame = Time.time;
 	}
 
 	void Update ()
