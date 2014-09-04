@@ -25,10 +25,14 @@ public class MainMenuController : MonoBehaviour
 			if (Input.touchCount > 0) {
 				Touch touchPoint = Input.GetTouch (0);
 
+				Plane horPlane = new Plane (Vector3.up, Vector3.zero);
+				Ray moveRay = Camera.main.ScreenPointToRay (touchPoint.position);
+
 				if (touchPoint.phase == TouchPhase.Began) {
 					initialPoint = Camera.main.ScreenToWorldPoint (new Vector3 (touchPoint.position.x, touchPoint.position.y, 10));
 				}
 
+				/*
 				if (touchPoint.phase == TouchPhase.Moved) {
 					Vector3 curentPoint = Camera.main.ScreenToWorldPoint (new Vector3 (touchPoint.position.x, touchPoint.position.y, 10));
 
@@ -36,6 +40,16 @@ public class MainMenuController : MonoBehaviour
 					Debug.Log ("Begin: " + initialPoint + " End: " + curentPoint + " Amount: " + moveAmount);
 					levelPresenter.position = new Vector3 (
 						Mathf.Clamp (levelPresenter.position.x + moveAmount, -29, -5),
+						levelPresenter.position.y,
+						levelPresenter.position.z
+					);
+				}
+				*/
+
+				if (touchPoint.phase == TouchPhase.Moved) {
+					Debug.Log (touchPoint.deltaPosition.x);
+					levelPresenter.position = new Vector3 (
+						Mathf.Clamp (levelPresenter.position.x + touchPoint.deltaPosition.x * 0.01f, -29, -5),
 						levelPresenter.position.y,
 						levelPresenter.position.z
 					);
