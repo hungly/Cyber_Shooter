@@ -12,13 +12,14 @@ public class GameController : MonoBehaviour
 	private int itemShotConsecutivelyWithoutBeingHit;
 	private int missedShotConsecutively = 0;
 	private int accurateShotConsecutively = 0;
-	private int level;
+	private int level = 1;
 	private bool isGamePaused = false;
 	private int itemAchieved = 0;
 	private int remainTimeForLaser = 10;
 	private float currentTime = 0;
 	private float defaultVolume;
 	private float defaultVolumeMusic;
+	private int maxLevel = 1;
 
 	public int GetLevel ()
 	{
@@ -27,7 +28,6 @@ public class GameController : MonoBehaviour
 
 	void Start ()
 	{
-		PlayGamesPlatform.Activate ();
 		defaultVolume = upgradeSound.volume;
 		defaultVolumeMusic = audio.volume;
 		timeStartGame = Time.time;
@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour
 		if (bullets <= 0) {
 			bullets = 0;
 			calculateActualGamePlayed ();
-			Social.ReportScore((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
+			Social.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
 			if (!isGamePaused) { 	 	
 				changeGamePausedStatus (); 	 	
@@ -189,5 +189,23 @@ public class GameController : MonoBehaviour
 	public int GetItemShotConsecutivelyWithoutBeingHit ()
 	{
 		return itemShotConsecutivelyWithoutBeingHit;
+	}
+
+	public void increaseMaxLevel ()
+	{
+		if (level >= maxLevel) {
+			maxLevel = level;
+			PlayerPrefs.SetInt ("MaxLevel", maxLevel);
+		}
+	}
+
+	public int getMaxLevel ()
+	{
+		return maxLevel;
+	}
+
+	public void setMaxLevelAtStart ()
+	{
+		maxLevel = PlayerPrefs.HasKey ("MaxLevel") ? PlayerPrefs.GetInt ("MaxLevel") : 1;
 	}
 }

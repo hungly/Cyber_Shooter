@@ -9,11 +9,20 @@ public class MainMenuController : MonoBehaviour
 	private bool isRunning = true;
 	private float defaultVolume;
 	private Vector3 initialPoint = Vector3.zero;
+	private int unlockedLevels;
 
 	void Start ()
 	{
 		PlayGamesPlatform.Activate ();
 		defaultVolume = audio.volume;
+		unlockedLevels = PlayerPrefs.HasKey ("MaxLevel") ? PlayerPrefs.GetInt ("MaxLevel") : 1;
+
+		for (int i = 1; i <= unlockedLevels; i++) {
+			GameObject.FindWithTag ("Level " + i).SetActive (true);
+		}
+		for (int i = unlockedLevels+1; i <= 5; i++) {
+			GameObject.FindWithTag ("Level " + i).SetActive (false);
+		}
 	}
 
 	// Update is called once per frame
