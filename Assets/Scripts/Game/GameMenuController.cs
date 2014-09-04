@@ -122,6 +122,7 @@ public class GameMenuController : MonoBehaviour
 		}
 
 		if (gameOverScreen) {
+			Time.timeScale = 0;
 			GUI.Box (new Rect (0, 0, Screen.width, Screen.height), "", background);
 			
 			GUI.Box (new Rect (Screen.width / 2 - frameStyle.fixedWidth / 2, Screen.height / 2 - frameStyle.fixedWidth / 2, frameStyle.fixedWidth, frameStyle.fixedHeight), "", frameStyle);
@@ -136,6 +137,7 @@ public class GameMenuController : MonoBehaviour
 
 			if (GUI.Button (new Rect (Screen.width / 2 - buttonStyle.fixedWidth / 2, Screen.height / 2 - buttonStyle.fixedHeight / 9f, buttonStyle.fixedWidth, buttonStyle.fixedHeight), "Restart", buttonStyle)) {
 				Time.timeScale = 1;
+				GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().setTimeStartGame();
 				TootgleGameOverScreen();
 				Application.LoadLevel ("Level 1");
 				audio.Play ();

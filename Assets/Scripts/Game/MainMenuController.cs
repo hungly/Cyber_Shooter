@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GooglePlayGames;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MainMenuController : MonoBehaviour
 
 	void Start ()
 	{
+		PlayGamesPlatform.Activate ();
 		defaultVolume = audio.volume;
 	}
 
@@ -23,7 +25,7 @@ public class MainMenuController : MonoBehaviour
 
 				if (touchPoint.phase == TouchPhase.Moved) {
 					levelPresenter.position = new Vector3 (
-					Mathf.Clamp (transform.position.x - touchPoint.deltaPosition.x * 0.1f, -5, -29),
+					Mathf.Clamp (transform.position.x - touchPoint.deltaPosition.x * 0.1f, -29, -5),
 					levelPresenter.position.y,
 					levelPresenter.position.z
 					);
@@ -36,6 +38,8 @@ public class MainMenuController : MonoBehaviour
 				
 					if (touchPoint.phase == TouchPhase.Ended && hit.collider.tag.StartsWith ("Level")) {
 						Application.LoadLevel (hit.collider.tag);
+						GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().setTimeStartGame();
+
 					}
 				}
 				

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
@@ -81,9 +81,11 @@ public class GameController : MonoBehaviour
 		if (bullets <= 0) {
 			bullets = 0;
 			calculateActualGamePlayed ();
-			Social.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQEA", (bool successs) => {});
+			Social.ReportScore((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
-
+			if (!isGamePaused) { 	 	
+				changeGamePausedStatus (); 	 	
+			} 
 			GameObject.FindWithTag ("PauseButton").GetComponent<GameMenuController> ().TootgleGameOverScreen ();
 		}
 	}
@@ -145,7 +147,8 @@ public class GameController : MonoBehaviour
 		missedShotConsecutively++;
 		accurateShotConsecutively = 0;
 		if (missedShotConsecutively == 10) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQDQ", 100.0f, (bool success) => {});
+			// This achievement may work incorrectly, so it is temporarily disabled
+			//Social.ReportProgress ("CgkI68ebh5kcEAIQDQ", 100.0f, (bool success) => {});
 		}
 	}
 
