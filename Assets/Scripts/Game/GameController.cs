@@ -164,7 +164,6 @@ public class GameController : MonoBehaviour
 
 	public void increaseLevel ()
 	{
-		Debug.Log ("Run");
 		level++;
 		if (level == 2) {
 			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});

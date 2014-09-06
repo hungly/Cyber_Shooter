@@ -40,10 +40,6 @@ public class DestroyByContact : MonoBehaviour
 				GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
 			}
 
-			if (collision.gameObject.tag == "MissileProjectile") {
-				collision.gameObject.GetComponent<MissileProjectile> ().explode (rigidbody);
-			}
-
 			effect = (GameObject)Resources.Load ("Effects/Levels/Destroy " + GameObject.FindWithTag ("GameController").GetComponent<GameController> ().GetLevel ());
 			Instantiate (effect, transform.position, Quaternion.identity);
 		}
@@ -67,10 +63,6 @@ public class DestroyByContact : MonoBehaviour
 				GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().increaseItemShotConsecutivelyWithoutBeingHit ();
 				isDestroy = true;
 			}
-			
-			if (other.tag == "MissileProjectile") {
-				other.gameObject.GetComponent<MissileProjectile> ().explode (rigidbody);
-			}
 
 			effect = (GameObject)Resources.Load ("Effects/Levels/Destroy " + GameObject.FindWithTag ("GameController").GetComponent<GameController> ().GetLevel ());
 			Instantiate (effect, transform.position, Quaternion.identity);
@@ -79,5 +71,9 @@ public class DestroyByContact : MonoBehaviour
 		if (rigidbody != null && other.tag != "LevelFloor") {
 			rigidbody.useGravity = true;
 		}
+	}
+
+	public void TriggerDestroy(Collider other){
+		OnTriggerEnter (other);
 	}
 }
