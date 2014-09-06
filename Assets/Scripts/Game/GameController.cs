@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour
 		if (bullets <= 0) {
 			bullets = 0;
 			calculateActualGamePlayed ();
-			Social.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
+			Social.Active.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
 			if (!isGamePaused) { 	 	
 				changeGamePausedStatus (); 	 	
@@ -111,11 +111,11 @@ public class GameController : MonoBehaviour
 				itemAchieved++;
 				upgradeSound.Play ();
 				if (itemAchieved == 1) {
-					Social.ReportProgress ("CgkI68ebh5kcEAIQCw", 100.0f, (bool success) => {});
+					Social.Active.ReportProgress ("CgkI68ebh5kcEAIQCw", 100.0f, (bool success) => {});
 				} else if (itemAchieved == 2) {
-					Social.ReportProgress ("CgkI68ebh5kcEAIQCQ", 100.0f, (bool success) => {});
+					Social.Active.ReportProgress ("CgkI68ebh5kcEAIQCQ", 100.0f, (bool success) => {});
 				} else if (itemAchieved == 3) {
-					Social.ReportProgress ("CgkI68ebh5kcEAIQCg", 100.0f, (bool success) => {});
+					Social.Active.ReportProgress ("CgkI68ebh5kcEAIQCg", 100.0f, (bool success) => {});
 				}
 
 				if (itemAchieved != 3) {	
@@ -158,7 +158,7 @@ public class GameController : MonoBehaviour
 		accurateShotConsecutively++;
 		missedShotConsecutively = 0;
 		if (accurateShotConsecutively == 10) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQCA", 100.0f, (bool success) => {});
+			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQCA", 100.0f, (bool success) => {});
 		}
 	}
 
@@ -166,13 +166,13 @@ public class GameController : MonoBehaviour
 	{
 		level++;
 		if (level == 2) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
+			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
 		} else if (level == 3) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
+			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQAw", 100.0f, (bool success) => {});
 		} else if (level == 4) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
+			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQBA", 100.0f, (bool success) => {});
 		} else if (level == 5) {
-			Social.ReportProgress ("CgkI68ebh5kcEAIQBQ", 100.0f, (bool success) => {});
+			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQBQ", 100.0f, (bool success) => {});
 		}
 	}
 

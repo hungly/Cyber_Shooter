@@ -86,17 +86,25 @@ public class MainMenuGUIController : MonoBehaviour
 				audio.Play ();
 			}
 			if (GUI.Button (new Rect (Screen.width - leaderboardButtonStyle.fixedWidth / 0.5f, 0, leaderboardButtonStyle.fixedWidth, leaderboardButtonStyle.fixedHeight), "", leaderboardButtonStyle)) {
-				Social.localUser.Authenticate((bool success) =>{
-					if (success){
-						((PlayGamesPlatform) Social.Active).ShowLeaderboardUI("CgkI68ebh5kcEAIQAA");
-					}});
+				if (Social.Active.localUser.authenticated) {
+					((PlayGamesPlatform)Social.Active).ShowLeaderboardUI ("CgkI68ebh5kcEAIQAA");
+				} else {
+					Social.Active.localUser.Authenticate ((bool success) => {
+						if (success) {
+							((PlayGamesPlatform)Social.Active).ShowLeaderboardUI ("CgkI68ebh5kcEAIQAA");
+						}});
+				}
 				audio.Play ();
 			}
 			if (GUI.Button (new Rect (Screen.width - achievmentButtonStyle.fixedWidth / 0.33f, 0, achievmentButtonStyle.fixedWidth, achievmentButtonStyle.fixedHeight), "", achievmentButtonStyle)) {
-				Social.localUser.Authenticate((bool success) =>{
-					if (success){
-						Social.ShowAchievementsUI();
-					}});
+				if (Social.Active.localUser.authenticated) {
+					Social.ShowAchievementsUI ();
+				} else {
+					Social.Active.localUser.Authenticate ((bool success) => {
+						if (success) {
+							Social.ShowAchievementsUI ();
+						}});
+				}
 				audio.Play ();
 			}
 		}

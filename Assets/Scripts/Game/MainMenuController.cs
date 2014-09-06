@@ -8,12 +8,22 @@ public class MainMenuController : MonoBehaviour
 	public AudioSource guiClick;
 	private bool isRunning = true;
 	private float defaultVolume;
-	private Vector3 initialPoint = Vector3.zero;
+	// private Vector3 initialPoint = Vector3.zero;
 	private int unlockedLevels;
 
 	void Start ()
 	{
+		PlayGamesPlatform.DebugLogEnabled = true;
 		PlayGamesPlatform.Activate ();
+
+		Social.Active.localUser.Authenticate ((bool success) => {
+			if (success) {
+				Debug.Log ("Authenticate success");
+			} else {
+				Debug.LogWarning ("Authenticate failed");
+			}
+		});
+
 		defaultVolume = audio.volume;
 		unlockedLevels = PlayerPrefs.HasKey ("MaxLevel") ? PlayerPrefs.GetInt ("MaxLevel") : 1;
 
@@ -34,12 +44,14 @@ public class MainMenuController : MonoBehaviour
 			if (Input.touchCount > 0) {
 				Touch touchPoint = Input.GetTouch (0);
 
-				Plane horPlane = new Plane (Vector3.up, Vector3.zero);
-				Ray moveRay = Camera.main.ScreenPointToRay (touchPoint.position);
+				// Plane horPlane = new Plane (Vector3.up, Vector3.zero);
+				// Ray moveRay = Camera.main.ScreenPointToRay (touchPoint.position);
 
+				/*
 				if (touchPoint.phase == TouchPhase.Began) {
 					initialPoint = Camera.main.ScreenToWorldPoint (new Vector3 (touchPoint.position.x, touchPoint.position.y, 10));
 				}
+				*/
 
 				/*
 				if (touchPoint.phase == TouchPhase.Moved) {
@@ -58,7 +70,7 @@ public class MainMenuController : MonoBehaviour
 				if (touchPoint.phase == TouchPhase.Moved) {
 					Debug.Log (touchPoint.deltaPosition.x);
 					levelPresenter.position = new Vector3 (
-						Mathf.Clamp (levelPresenter.position.x + touchPoint.deltaPosition.x * 0.01f, -29, -5),
+						Mathf.Clamp (levelPresenter.position.x + touchPoint.deltaPosition.x * 0.1f, -29, -5),
 						levelPresenter.position.y,
 						levelPresenter.position.z
 					);
