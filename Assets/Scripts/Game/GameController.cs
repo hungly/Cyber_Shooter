@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
 	private int itemShotConsecutivelyWithoutBeingHit;
 	private int missedShotConsecutively = 0;
 	private int accurateShotConsecutively = 0;
-	private int level = 1;
+	private int level = 0;
 	private bool isGamePaused = false;
 	private int itemAchieved = 0;
 	private int remainTimeForLaser = 10;
@@ -164,6 +164,7 @@ public class GameController : MonoBehaviour
 
 	public void increaseLevel ()
 	{
+		Debug.Log ("Run");
 		level++;
 		if (level == 2) {
 			Social.Active.ReportProgress ("CgkI68ebh5kcEAIQAg", 100.0f, (bool success) => {});
