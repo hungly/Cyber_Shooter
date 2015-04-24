@@ -4,7 +4,7 @@ Cyber_Shooter
 A 3D acrade game created for Android device using Unity. This program is the assignment for "Mobile Application Development"
 course (COSC2543) at RMIT International University Vietnam. 
 
-COSC2451
+COSC2543
 -----
 
 Mobile Application Development
