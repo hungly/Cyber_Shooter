@@ -7,7 +7,7 @@ course (COSC2543) at RMIT International University Vietnam.
 COSC2451
 -----
 
-Programming Techniques
+Mobile Application Development
 -----
 
 Copyright 2014 Ly Quoc Hung (s3426511), Ly Quan Liem (s3426110)
