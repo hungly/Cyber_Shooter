@@ -141,7 +141,7 @@ public class GameController : MonoBehaviour
 		itemAchieved = 0;
 		upgradeSound.Play ();
 	}
-
+	
 	public void resetItemShotConsecutivelyWithoutBeingHit ()
 	{
 		itemShotConsecutivelyWithoutBeingHit = 0;
