@@ -178,8 +178,8 @@ public class PlayerController : MonoBehaviour
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
 
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
-			
-			audio.Play();
+
+			audio.Play ();
 		}
 	}
 
@@ -191,9 +191,9 @@ public class PlayerController : MonoBehaviour
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().bulletShot (10);
 			
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().resetItemShotConsecutivelyWithoutBeingHit ();
-			
-			audio.clip = (AudioClip)Resources.Load("ship-hit");
-			audio.Play();
+
+			audio.clip = (AudioClip)Resources.Load ("ship-hit");
+			audio.Play ();
 		}
 	}
 

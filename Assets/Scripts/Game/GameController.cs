@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 	public AudioSource upgradeSound;
 	private float timePlayed = 0;
 	private float timeStartGame = 0;
-	private int bullets = 50;
+	private int bullets = 10;
 	private int itemShotConsecutivelyWithoutBeingHit;
 	private int missedShotConsecutively = 0;
 	private int accurateShotConsecutively = 0;
@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
 
 	void Start ()
 	{
+		PlayGamesPlatform.Activate ();
 		defaultVolume = upgradeSound.volume;
 		defaultVolumeMusic = audio.volume;
 		timeStartGame = Time.time;
@@ -84,9 +85,10 @@ public class GameController : MonoBehaviour
 			calculateActualGamePlayed ();
 			Social.Active.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
-			if (!isGamePaused) { 	 	
-				changeGamePausedStatus (); 	 	
-			} 
+
+			if (!isGamePaused) {
+				changeGamePausedStatus ();
+			}
 			GameObject.FindWithTag ("PauseButton").GetComponent<GameMenuController> ().TootgleGameOverScreen ();
 		}
 	}
