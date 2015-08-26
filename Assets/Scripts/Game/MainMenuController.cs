@@ -35,6 +35,11 @@ public class MainMenuController : MonoBehaviour
 		}
 	}
 
+	void Start(){
+		PlayGamesPlatform.Activate ();
+		GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().setMaxLevelAtStart();
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{

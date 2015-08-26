@@ -53,6 +53,8 @@ public class GameController : MonoBehaviour
 				}
 			}
 		}
+
+		UpdateBulletIndicator ();
 	}
 
 	public void setTimeStartGame ()
@@ -80,8 +82,9 @@ public class GameController : MonoBehaviour
 	{
 		bullets -= numShot;
 
-		if (bullets <= 0) {
-			bullets = 0;
+		UpdateBulletsCount ();
+
+		if (bullets == 0) {
 			calculateActualGamePlayed ();
 			Social.Active.ReportScore ((long)timePlayed, "CgkI68ebh5kcEAIQAA", (bool successs) => {});
 			Social.ReportProgress ("CgkI68ebh5kcEAIQEQ", 100.0f, (bool success) => {});
@@ -102,6 +105,7 @@ public class GameController : MonoBehaviour
 		} else if (shotObject == "Star") {
 			bullets += 10;
 		}
+		UpdateBulletsCount ();
 	}
 
 	public void increaseItemShotConsecutivelyWithoutBeingHit ()
