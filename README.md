@@ -26,4 +26,4 @@ object in the game can be destroy. All object in the game will have some kind of
 Credits
 ----
 Special thanks to:
-- Le Minh Quang (s3373237@rmit.edu.vn) for ship's model
+- Le Minh Quang (s3373237@rmit.edu.vn) for game's 3D models
